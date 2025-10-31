@@ -11,16 +11,32 @@ export const GameSetup = ({ onStartGame }: GameSetupProps) => {
   const [playerCount, setPlayerCount] = useState(4);
   const [impostorCount, setImpostorCount] = useState(1);
 
+  const maxImpostors = Math.floor(playerCount / 2);
+
   const incrementPlayers = () => {
-    if (playerCount < 15) setPlayerCount(playerCount + 1);
+    if (playerCount < 15) {
+      setPlayerCount(playerCount + 1);
+      // Adjust impostor count if it exceeds new maximum
+      const newMax = Math.floor((playerCount + 1) / 2);
+      if (impostorCount > newMax) {
+        setImpostorCount(newMax);
+      }
+    }
   };
 
   const decrementPlayers = () => {
-    if (playerCount > 4) setPlayerCount(playerCount - 1);
+    if (playerCount > 4) {
+      setPlayerCount(playerCount - 1);
+      // Adjust impostor count if it exceeds new maximum
+      const newMax = Math.floor((playerCount - 1) / 2);
+      if (impostorCount > newMax) {
+        setImpostorCount(newMax);
+      }
+    }
   };
 
   const incrementImpostors = () => {
-    if (impostorCount < 1) setImpostorCount(impostorCount + 1);
+    if (impostorCount < maxImpostors) setImpostorCount(impostorCount + 1);
   };
 
   const decrementImpostors = () => {
@@ -69,7 +85,7 @@ export const GameSetup = ({ onStartGame }: GameSetupProps) => {
 
           <div className="space-y-3">
             <label className="text-sm font-medium">
-              Amount of impostors <span className="text-muted-foreground">(max. 1)</span>
+              Amount of impostors <span className="text-muted-foreground">(max. {maxImpostors})</span>
             </label>
             <div className="flex items-center gap-3">
               <Button
@@ -92,7 +108,7 @@ export const GameSetup = ({ onStartGame }: GameSetupProps) => {
                 variant="secondary"
                 size="icon"
                 onClick={incrementImpostors}
-                disabled={impostorCount >= 1}
+                disabled={impostorCount >= maxImpostors}
               >
                 <Plus className="h-4 w-4" />
               </Button>

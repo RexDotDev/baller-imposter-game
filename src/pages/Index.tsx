@@ -11,13 +11,25 @@ const Index = () => {
   const [gameState, setGameState] = useState<GameState>("setup");
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [totalPlayers, setTotalPlayers] = useState(4);
-  const [impostorPosition, setImpostorPosition] = useState<number>(0);
   const [assignedPlayer, setAssignedPlayer] = useState<Player | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
+  const [impostorPositions, setImpostorPositions] = useState<number[]>([]);
+
   const handleStartGame = (playerCount: number, impostorCount: number) => {
     setTotalPlayers(playerCount);
-    setImpostorPosition(impostorCount > 0 ? Math.floor(Math.random() * playerCount) + 1 : -1);
+    
+    // Generate multiple random impostor positions
+    const positions: number[] = [];
+    if (impostorCount > 0) {
+      const availablePositions = Array.from({ length: playerCount }, (_, i) => i + 1);
+      for (let i = 0; i < impostorCount; i++) {
+        const randomIndex = Math.floor(Math.random() * availablePositions.length);
+        positions.push(availablePositions[randomIndex]);
+        availablePositions.splice(randomIndex, 1);
+      }
+    }
+    setImpostorPositions(positions);
     
     // Select a random player for this game
     const randomPlayer = allPlayers[Math.floor(Math.random() * allPlayers.length)];
@@ -41,9 +53,10 @@ const Index = () => {
     setCurrentPlayer(1);
     setAssignedPlayer(null);
     setSelectedPlayer(null);
+    setImpostorPositions([]);
   };
 
-  const isCurrentPlayerImpostor = currentPlayer === impostorPosition;
+  const isCurrentPlayerImpostor = impostorPositions.includes(currentPlayer);
 
   // Set the assigned player when revealing
   if (gameState === "revealing" && !assignedPlayer && !isCurrentPlayerImpostor) {
