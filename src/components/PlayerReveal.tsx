@@ -51,17 +51,10 @@ export const PlayerReveal = ({
               </div>
             ) : assignedPlayer ? (
               <div className="text-center space-y-4">
-                <div className="relative w-48 h-48 mx-auto rounded-lg overflow-hidden border-4 border-primary glow-orange">
-                  <img
-                    src={assignedPlayer.imageUrl}
-                    alt={assignedPlayer.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold">{assignedPlayer.name}</h3>
-                  <p className="text-lg text-muted-foreground">{assignedPlayer.team}</p>
-                  <p className="text-sm text-primary font-semibold">{assignedPlayer.league}</p>
+                  <h3 className="text-3xl font-bold">{assignedPlayer.name}</h3>
+                  <p className="text-xl text-muted-foreground">{assignedPlayer.team}</p>
+                  <p className="text-lg text-primary font-semibold">{assignedPlayer.league}</p>
                 </div>
               </div>
             ) : null}

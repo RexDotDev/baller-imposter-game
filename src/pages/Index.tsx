@@ -2,7 +2,6 @@ import { useState } from "react";
 import { HowToPlay } from "@/components/HowToPlay";
 import { GameSetup } from "@/components/GameSetup";
 import { PlayerReveal } from "@/components/PlayerReveal";
-import { PlayerGrid } from "@/components/PlayerGrid";
 import { allPlayers, Player } from "@/data/players";
 
 type GameState = "setup" | "revealing" | "complete";
@@ -125,9 +124,8 @@ const Index = () => {
         </div>
       </main>
 
-      {/* Footer with Player Grid */}
-      <footer className="py-8 space-y-6">
-        <PlayerGrid players={allPlayers.slice(0, 20)} />
+      {/* Footer */}
+      <footer className="py-8">
         <div className="text-center text-sm text-muted-foreground space-y-1">
           <p>© 2025 The Impostor. All rights reserved.</p>
         </div>
