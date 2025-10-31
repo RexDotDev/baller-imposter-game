@@ -136,15 +136,20 @@ export function getPlayerImageUrls(player: Player): string[] {
   // First, try to find exact match in the map (for NBA players)
   const exactMatch = playerImageMap[player.name];
   if (exactMatch && exactMatch.length > 0) {
-    // Return paths as-is - browsers handle spaces and special chars in URLs
-    return exactMatch.map(filename => `/The NBA, Ranked_files/${filename}`);
+    // Return URLs - browsers handle spaces in paths, but encode filename for safety
+    return exactMatch.map(filename => {
+      // For mobile compatibility, try both encoded and non-encoded versions
+      const basePath = `/The NBA, Ranked_files/`;
+      // Primary: encoded filename (works on most browsers)
+      return basePath + encodeURIComponent(filename);
+    });
   }
 
   // For Euroleague players, check euroleague folder
   if (player.league === "Euroleague") {
     // Convert player name to filename format
     const imageName = getEuroleagueImageName(player.name);
-    const euroleaguePath = `/euroleague/${imageName}.png`;
+    const euroleaguePath = `/euroleague/${encodeURIComponent(imageName)}.png`;
     return [euroleaguePath];
   }
 

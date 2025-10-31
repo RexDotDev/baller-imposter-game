@@ -26,11 +26,13 @@ export const PlayerReveal = ({
   const [revealed, setRevealed] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
 
   useEffect(() => {
     if (assignedPlayer && revealed) {
       setImageLoading(true);
       setImageError(false);
+      setImageIndex(0);
       
       // Preload image when player is revealed for faster display
       const imageUrls = getPlayerImageUrls(assignedPlayer);
@@ -42,7 +44,7 @@ export const PlayerReveal = ({
         };
         img.onerror = () => {
           setImageLoading(false);
-          setImageError(true);
+          setImageError(false); // Don't show error yet, let img tag handle it
         };
       } else {
         setImageLoading(false);
@@ -88,56 +90,65 @@ export const PlayerReveal = ({
                 {(() => {
                   const imageUrls = getPlayerImageUrls(assignedPlayer);
                   if (imageUrls.length > 0) {
+                    // Use imageIndex to show the correct image
+                    const displayUrl = imageUrls[imageIndex] || imageUrls[0];
+                    
                     return (
                       <div className="mt-6 w-full">
                         <Carousel className="w-full">
                           <CarouselContent className="-ml-2 md:-ml-4">
-                            {imageUrls.map((imageUrl, index) => (
-                              <CarouselItem key={index} className="pl-2 md:pl-4 basis-full">
-                                <div className="flex items-center justify-center p-2 relative min-h-[200px] md:min-h-[400px]">
-                                  {imageLoading && !imageError && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                                    </div>
-                                  )}
-                                  <img
-                                    src={imageUrl}
-                                    alt={assignedPlayer.name}
-                                    className={`w-full h-auto rounded-lg object-contain max-h-[300px] md:max-h-[500px] shadow-lg transition-opacity duration-300 ${
-                                      imageLoading ? "opacity-0" : "opacity-100"
-                                    }`}
-                                    loading="eager"
-                                    decoding="async"
-                                    fetchPriority="high"
-                                    onLoad={(e) => {
-                                      setImageLoading(false);
-                                      setImageError(false);
-                                      // Force reflow for smooth transition
-                                      (e.target as HTMLImageElement).offsetHeight;
-                                    }}
-                                    onError={(e) => {
-                                      setImageLoading(false);
-                                      setImageError(true);
-                                      console.error("Failed to load image:", imageUrl, "Player:", assignedPlayer.name);
-                                    }}
-                                  />
-                                  {imageError && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-secondary/50 rounded-lg">
-                                      <p className="text-muted-foreground text-sm text-center px-4">
-                                        Slika nije dostupna
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              </CarouselItem>
-                            ))}
+                            <CarouselItem className="pl-2 md:pl-4 basis-full">
+                              <div className="flex items-center justify-center p-2 relative min-h-[200px] md:min-h-[400px]">
+                                {imageLoading && !imageError && (
+                                  <div className="absolute inset-0 flex items-center justify-center z-10">
+                                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                  </div>
+                                )}
+                                <img
+                                  key={`${displayUrl}-${imageIndex}`}
+                                  src={displayUrl}
+                                  alt={assignedPlayer.name}
+                                  className={`w-full h-auto rounded-lg object-contain max-h-[300px] md:max-h-[500px] shadow-lg transition-opacity duration-300 ${
+                                    imageLoading ? "opacity-0" : "opacity-100"
+                                  }`}
+                                  loading="eager"
+                                  decoding="async"
+                                  fetchPriority="high"
+                                  onLoad={(e) => {
+                                    setImageLoading(false);
+                                    setImageError(false);
+                                    // Force reflow for smooth transition
+                                    (e.target as HTMLImageElement).offsetHeight;
+                                  }}
+                                  onError={(e) => {
+                                    console.error("Failed to load image:", displayUrl, "Player:", assignedPlayer.name, "League:", assignedPlayer.league);
+                                    // Try next image if available
+                                    if (imageUrls.length > imageIndex + 1) {
+                                      setImageIndex(imageIndex + 1);
+                                      setImageLoading(true);
+                                    } else {
+                                      // Try alternative URL format (without encoding)
+                                      const altUrl = displayUrl.replace(/%20/g, ' ').replace(/%2C/g, ',').replace(/%28/g, '(').replace(/%29/g, ')');
+                                      if (altUrl !== displayUrl) {
+                                        (e.target as HTMLImageElement).src = altUrl;
+                                        setImageLoading(true);
+                                      } else {
+                                        setImageLoading(false);
+                                        setImageError(true);
+                                      }
+                                    }
+                                  }}
+                                />
+                                {imageError && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-secondary/50 rounded-lg z-10">
+                                    <p className="text-muted-foreground text-sm text-center px-4">
+                                      Slika nije dostupna
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            </CarouselItem>
                           </CarouselContent>
-                          {imageUrls.length > 1 && (
-                            <>
-                              <CarouselPrevious className="left-2 md:left-4" />
-                              <CarouselNext className="right-2 md:right-4" />
-                            </>
-                          )}
                         </Carousel>
                       </div>
                     );
