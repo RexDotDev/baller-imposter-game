@@ -136,6 +136,7 @@ export function getPlayerImageUrls(player: Player): string[] {
   // First, try to find exact match in the map (for NBA players)
   const exactMatch = playerImageMap[player.name];
   if (exactMatch && exactMatch.length > 0) {
+    // Return paths as-is - browsers handle spaces and special chars in URLs
     return exactMatch.map(filename => `/The NBA, Ranked_files/${filename}`);
   }
 

@@ -32,6 +32,8 @@ export const PlayerCarousel = ({ players }: PlayerCarouselProps) => {
               src={imageUrl}
               alt={player.name}
               className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = "none";
               }}
