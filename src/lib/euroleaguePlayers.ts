@@ -141,7 +141,6 @@ export function getEuroleagueTeam(playerName: string): string {
     "Tyson Ward": "Euroleague",
     "Sterling Brown": "Euroleague",
     "Semi Ojeleye": "Euroleague",
-    "Roman Sorkin": "Euroleague",
     "Mikael Jantunen": "Euroleague",
     "Miikka Muurinen": "Euroleague",
     "Mitar Bosnjakovic": "Euroleague",
