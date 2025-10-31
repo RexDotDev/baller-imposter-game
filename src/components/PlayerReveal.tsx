@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Eye, EyeOff, RotateCcw } from "lucide-react";
 import { Player } from "@/data/players";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { getPlayerImageUrls } from "@/lib/playerImages";
 
 interface PlayerRevealProps {
   currentPlayer: number;
@@ -24,7 +26,7 @@ export const PlayerReveal = ({
   const [revealed, setRevealed] = useState(false);
 
   return (
-    <Card className="p-8 max-w-md w-full bg-card/80 backdrop-blur border-game-border animate-scale-in">
+    <Card className="p-8 max-w-2xl w-full bg-card/80 backdrop-blur border-game-border animate-scale-in">
       <div className="space-y-6">
         <h2 className="text-2xl font-bold text-center">
           Player {currentPlayer}/{totalPlayers}
@@ -56,6 +58,43 @@ export const PlayerReveal = ({
                   <p className="text-xl text-muted-foreground">{assignedPlayer.team}</p>
                   <p className="text-lg text-primary font-semibold">{assignedPlayer.league}</p>
                 </div>
+                
+                {/* Player Image Carousel */}
+                {(() => {
+                  const imageUrls = getPlayerImageUrls(assignedPlayer);
+                  if (imageUrls.length > 0) {
+                    return (
+                      <div className="mt-6 w-full">
+                        <Carousel className="w-full">
+                          <CarouselContent className="-ml-2 md:-ml-4">
+                            {imageUrls.map((imageUrl, index) => (
+                              <CarouselItem key={index} className="pl-2 md:pl-4 basis-full">
+                                <div className="flex items-center justify-center p-2">
+                                  <img
+                                    src={imageUrl}
+                                    alt={assignedPlayer.name}
+                                    className="w-full h-auto rounded-lg object-contain max-h-[500px] shadow-lg"
+                                    onError={(e) => {
+                                      // Hide broken images
+                                      (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
+                                  />
+                                </div>
+                              </CarouselItem>
+                            ))}
+                          </CarouselContent>
+                          {imageUrls.length > 1 && (
+                            <>
+                              <CarouselPrevious className="left-2 md:left-4" />
+                              <CarouselNext className="right-2 md:right-4" />
+                            </>
+                          )}
+                        </Carousel>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
               </div>
             ) : null}
 

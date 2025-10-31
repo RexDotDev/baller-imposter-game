@@ -3,13 +3,16 @@ import { Minus, Plus, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export type GameMode = "NBA" | "Euroleague" | "Mix";
+
 interface GameSetupProps {
-  onStartGame: (playerCount: number, impostorCount: number) => void;
+  onStartGame: (playerCount: number, impostorCount: number, mode: GameMode) => void;
 }
 
 export const GameSetup = ({ onStartGame }: GameSetupProps) => {
   const [playerCount, setPlayerCount] = useState(4);
   const [impostorCount, setImpostorCount] = useState(1);
+  const [mode, setMode] = useState<GameMode>("Mix");
 
   const maxImpostors = Math.floor(playerCount / 2);
 
@@ -116,8 +119,36 @@ export const GameSetup = ({ onStartGame }: GameSetupProps) => {
           </div>
         </div>
 
+        {/* Mode Selector */}
+        <div className="space-y-3">
+          <label className="text-sm font-medium">Game Mode</label>
+          <div className="grid grid-cols-3 gap-2">
+            <Button
+              variant={mode === "NBA" ? "default" : "outline"}
+              onClick={() => setMode("NBA")}
+              className="w-full"
+            >
+              NBA
+            </Button>
+            <Button
+              variant={mode === "Euroleague" ? "default" : "outline"}
+              onClick={() => setMode("Euroleague")}
+              className="w-full"
+            >
+              Euroleague
+            </Button>
+            <Button
+              variant={mode === "Mix" ? "default" : "outline"}
+              onClick={() => setMode("Mix")}
+              className="w-full"
+            >
+              Mix
+            </Button>
+          </div>
+        </div>
+
         <Button
-          onClick={() => onStartGame(playerCount, impostorCount)}
+          onClick={() => onStartGame(playerCount, impostorCount, mode)}
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg py-6 gap-2 glow-orange"
           size="lg"
         >

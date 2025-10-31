@@ -1,3 +1,5 @@
+import { euroleaguePlayersData } from "./euroleaguePlayersList";
+
 export interface Player {
   id: number;
   name: string;
@@ -6,7 +8,7 @@ export interface Player {
   imageUrl: string;
 }
 
-// Top 100 NBA Players
+// Top 100 NBA Players (updated from ranking)
 export const nbaPlayers: Player[] = [
   { id: 1, name: "Nikola Jokic", team: "Denver Nuggets", league: "NBA", imageUrl: "" },
   { id: 2, name: "Shai Gilgeous-Alexander", team: "Oklahoma City Thunder", league: "NBA", imageUrl: "" },
@@ -90,78 +92,27 @@ export const nbaPlayers: Player[] = [
   { id: 80, name: "Tari Eason", team: "Houston Rockets", league: "NBA", imageUrl: "" },
   { id: 81, name: "Mitchell Robinson", team: "New York Knicks", league: "NBA", imageUrl: "" },
   { id: 82, name: "De'Andre Hunter", team: "Cleveland Cavaliers", league: "NBA", imageUrl: "" },
-  { id: 83, name: "Buddy Hield", team: "Golden State Warriors", league: "NBA", imageUrl: "" },
-  { id: 84, name: "Brook Lopez", team: "Milwaukee Bucks", league: "NBA", imageUrl: "" },
-  { id: 85, name: "Nikola Vucevic", team: "Chicago Bulls", league: "NBA", imageUrl: "" },
-  { id: 86, name: "Terry Rozier", team: "Miami Heat", league: "NBA", imageUrl: "" },
-  { id: 87, name: "Jordan Clarkson", team: "Utah Jazz", league: "NBA", imageUrl: "" },
-  { id: 88, name: "Dennis Schroder", team: "Brooklyn Nets", league: "NBA", imageUrl: "" },
-  { id: 89, name: "Marcus Smart", team: "Memphis Grizzlies", league: "NBA", imageUrl: "" },
-  { id: 90, name: "Kelly Oubre Jr.", team: "Philadelphia 76ers", league: "NBA", imageUrl: "" },
-  { id: 91, name: "Kyle Kuzma", team: "Washington Wizards", league: "NBA", imageUrl: "" },
-  { id: 92, name: "Jordan Poole", team: "Washington Wizards", league: "NBA", imageUrl: "" },
-  { id: 93, name: "Clint Capela", team: "Atlanta Hawks", league: "NBA", imageUrl: "" },
-  { id: 94, name: "Jonas Valanciunas", team: "Washington Wizards", league: "NBA", imageUrl: "" },
-  { id: 95, name: "Tim Hardaway Jr.", team: "Detroit Pistons", league: "NBA", imageUrl: "" },
-  { id: 96, name: "Bogdan Bogdanovic", team: "Atlanta Hawks", league: "NBA", imageUrl: "" },
-  { id: 97, name: "Malcolm Brogdon", team: "Washington Wizards", league: "NBA", imageUrl: "" },
-  { id: 98, name: "John Collins", team: "Utah Jazz", league: "NBA", imageUrl: "" },
-  { id: 99, name: "Gary Trent Jr.", team: "Milwaukee Bucks", league: "NBA", imageUrl: "" },
-  { id: 100, name: "Spencer Dinwiddie", team: "Dallas Mavericks", league: "NBA", imageUrl: "" },
+  { id: 83, name: "Jalen Duren", team: "Detroit Pistons", league: "NBA", imageUrl: "" },
+  { id: 84, name: "Toumani Camara", team: "Portland Trail Blazers", league: "NBA", imageUrl: "" },
+  { id: 85, name: "Brandon Miller", team: "Charlotte Hornets", league: "NBA", imageUrl: "" },
+  { id: 86, name: "Devin Vassell", team: "San Antonio Spurs", league: "NBA", imageUrl: "" },
+  { id: 87, name: "Jakob Poeltl", team: "Toronto Raptors", league: "NBA", imageUrl: "" },
+  { id: 88, name: "Dillon Brooks", team: "Phoenix Suns", league: "NBA", imageUrl: "" },
+  { id: 89, name: "Aaron Nesmith", team: "Indiana Pacers", league: "NBA", imageUrl: "" },
+  { id: 90, name: "Herb Jones", team: "New Orleans Pelicans", league: "NBA", imageUrl: "" },
+  { id: 91, name: "Ausar Thompson", team: "Detroit Pistons", league: "NBA", imageUrl: "" },
+  { id: 92, name: "RJ Barrett", team: "Toronto Raptors", league: "NBA", imageUrl: "" },
+  { id: 93, name: "CJ McCollum", team: "Washington Wizards", league: "NBA", imageUrl: "" },
+  { id: 94, name: "Cason Wallace", team: "Oklahoma City Thunder", league: "NBA", imageUrl: "" },
+  { id: 95, name: "Bradley Beal", team: "Los Angeles Clippers", league: "NBA", imageUrl: "" },
+  { id: 96, name: "Anfernee Simons", team: "Boston Celtics", league: "NBA", imageUrl: "" },
+  { id: 97, name: "Jabari Smith Jr.", team: "Houston Rockets", league: "NBA", imageUrl: "" },
+  { id: 98, name: "T.J. McConnell", team: "Indiana Pacers", league: "NBA", imageUrl: "" },
+  { id: 99, name: "Santi Aldama", team: "Memphis Grizzlies", league: "NBA", imageUrl: "" },
+  { id: 100, name: "Jaden Ivey", team: "Detroit Pistons", league: "NBA", imageUrl: "" },
 ];
 
-// Top 50 Euroleague Players
-export const euroleaguePlayers: Player[] = [
-  { id: 101, name: "Kendrick Nunn", team: "Panathinaikos", league: "Euroleague", imageUrl: "" },
-  { id: 102, name: "Sasha Vezenkov", team: "Olympiacos", league: "Euroleague", imageUrl: "" },
-  { id: 103, name: "TJ Shorts", team: "Panathinaikos", league: "Euroleague", imageUrl: "" },
-  { id: 104, name: "Mike James", team: "Monaco", league: "Euroleague", imageUrl: "" },
-  { id: 105, name: "Wade Baldwin", team: "Fenerbahce", league: "Euroleague", imageUrl: "" },
-  { id: 106, name: "Edy Tavares", team: "Real Madrid", league: "Euroleague", imageUrl: "" },
-  { id: 107, name: "Evan Fournier", team: "Olympiacos", league: "Euroleague", imageUrl: "" },
-  { id: 108, name: "Nikola Mirotic", team: "Monaco", league: "Euroleague", imageUrl: "" },
-  { id: 109, name: "Shane Larkin", team: "Anadolu Efes", league: "Euroleague", imageUrl: "" },
-  { id: 110, name: "Facundo Campazzo", team: "Real Madrid", league: "Euroleague", imageUrl: "" },
-  { id: 111, name: "Vasilje Micic", team: "Hapoel Tel Aviv", league: "Euroleague", imageUrl: "" },
-  { id: 112, name: "Talon Horton-Tucker", team: "Fenerbahce", league: "Euroleague", imageUrl: "" },
-  { id: 113, name: "Kevin Punter", team: "Barcelona", league: "Euroleague", imageUrl: "" },
-  { id: 114, name: "Zach LeDay", team: "Milan", league: "Euroleague", imageUrl: "" },
-  { id: 115, name: "Theo Maledon", team: "Real Madrid", league: "Euroleague", imageUrl: "" },
-  { id: 116, name: "Nick Weiller-Babb", team: "Anadolu Efes", league: "Euroleague", imageUrl: "" },
-  { id: 117, name: "Elijah Bryant", team: "Hapoel Tel Aviv", league: "Euroleague", imageUrl: "" },
-  { id: 118, name: "Jabari Parker", team: "Partizan", league: "Euroleague", imageUrl: "" },
-  { id: 119, name: "Tornike Shengelia", team: "Barcelona", league: "Euroleague", imageUrl: "" },
-  { id: 120, name: "Lonnie Walker", team: "Maccabi Tel Aviv", league: "Euroleague", imageUrl: "" },
-  { id: 121, name: "Dzanan Musa", team: "Dubai", league: "Euroleague", imageUrl: "" },
-  { id: 122, name: "Cedi Osman", team: "Panathinaikos", league: "Euroleague", imageUrl: "" },
-  { id: 123, name: "Mario Hezonja", team: "Real Madrid", league: "Euroleague", imageUrl: "" },
-  { id: 124, name: "Carsen Edwards", team: "Virtus Bologna", league: "Euroleague", imageUrl: "" },
-  { id: 125, name: "Marko Guduric", team: "Milan", league: "Euroleague", imageUrl: "" },
-  { id: 126, name: "Carlik Jones", team: "Partizan", league: "Euroleague", imageUrl: "" },
-  { id: 127, name: "Juancho Hernangomez", team: "Panathinaikos", league: "Euroleague", imageUrl: "" },
-  { id: 128, name: "Chima Moneke", team: "Crvena Zvezda", league: "Euroleague", imageUrl: "" },
-  { id: 129, name: "Nigel Williams-Goss", team: "Zalgiris", league: "Euroleague", imageUrl: "" },
-  { id: 130, name: "Devin Booker", team: "Milan", league: "Euroleague", imageUrl: "" },
-  { id: 131, name: "Trey Lyles", team: "Real Madrid", league: "Euroleague", imageUrl: "" },
-  { id: 132, name: "Jerian Grant", team: "Panathinaikos", league: "Euroleague", imageUrl: "" },
-  { id: 133, name: "Daniel Theis", team: "Monaco", league: "Euroleague", imageUrl: "" },
-  { id: 134, name: "Devon Hall", team: "Fenerbahce", league: "Euroleague", imageUrl: "" },
-  { id: 135, name: "Sylvain Francisco", team: "Zalgiris", league: "Euroleague", imageUrl: "" },
-  { id: 136, name: "Nadir Hifi", team: "Paris", league: "Euroleague", imageUrl: "" },
-  { id: 137, name: "Nikola Milutinov", team: "Olympiacos", league: "Euroleague", imageUrl: "" },
-  { id: 138, name: "Codi Miller-McIntyre", team: "Crvena Zvezda", league: "Euroleague", imageUrl: "" },
-  { id: 139, name: "Shake Milton", team: "Partizan", league: "Euroleague", imageUrl: "" },
-  { id: 140, name: "Kostas Sloukas", team: "Panathinaikos", league: "Euroleague", imageUrl: "" },
-  { id: 141, name: "Jaylen Hoard", team: "Maccabi Tel Aviv", league: "Euroleague", imageUrl: "" },
-  { id: 142, name: "Alpha Diallo", team: "Monaco", league: "Euroleague", imageUrl: "" },
-  { id: 143, name: "Marcus Howard", team: "Baskonia", league: "Euroleague", imageUrl: "" },
-  { id: 144, name: "Filip Petrusev", team: "Dubai", league: "Euroleague", imageUrl: "" },
-  { id: 145, name: "Bonzie Colson", team: "Fenerbahce", league: "Euroleague", imageUrl: "" },
-  { id: 146, name: "Richaun Holmes", team: "Panathinaikos", league: "Euroleague", imageUrl: "" },
-  { id: 147, name: "Jordan Loyd", team: "Anadolu Efes", league: "Euroleague", imageUrl: "" },
-  { id: 148, name: "Andreas Obst", team: "Bayern Munich", league: "Euroleague", imageUrl: "" },
-  { id: 149, name: "Nando De Colo", team: "ASVEL", league: "Euroleague", imageUrl: "" },
-  { id: 150, name: "Jan Vesely", team: "Barcelona", league: "Euroleague", imageUrl: "" },
-];
+// Euroleague Players
+export const euroleaguePlayers: Player[] = euroleaguePlayersData;
 
 export const allPlayers: Player[] = [...nbaPlayers, ...euroleaguePlayers];

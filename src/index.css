@@ -66,6 +66,20 @@ All colors MUST be HSL.
     border: 2px solid hsl(var(--game-accent));
     box-shadow: 0 0 15px hsl(var(--game-accent) / 0.4);
   }
+
+  .infinite-scroll {
+    animation: scroll-continuous 120s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes scroll-continuous {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer base {

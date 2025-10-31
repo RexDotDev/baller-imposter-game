@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { HowToPlay } from "@/components/HowToPlay";
-import { GameSetup } from "@/components/GameSetup";
+import { GameSetup, type GameMode } from "@/components/GameSetup";
 import { PlayerReveal } from "@/components/PlayerReveal";
-import { allPlayers, Player } from "@/data/players";
+import { PlayerCarousel } from "@/components/PlayerCarousel";
+import { allPlayers, nbaPlayers, euroleaguePlayers, Player } from "@/data/players";
 
 type GameState = "setup" | "revealing" | "complete";
 
@@ -12,11 +13,27 @@ const Index = () => {
   const [totalPlayers, setTotalPlayers] = useState(4);
   const [assignedPlayer, setAssignedPlayer] = useState<Player | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [gameMode, setGameMode] = useState<GameMode>("Mix");
 
   const [impostorPositions, setImpostorPositions] = useState<number[]>([]);
 
-  const handleStartGame = (playerCount: number, impostorCount: number) => {
+  // Filter players based on mode
+  const availablePlayers = useMemo(() => {
+    switch (gameMode) {
+      case "NBA":
+        return nbaPlayers;
+      case "Euroleague":
+        return euroleaguePlayers;
+      case "Mix":
+        return allPlayers;
+      default:
+        return allPlayers;
+    }
+  }, [gameMode]);
+
+  const handleStartGame = (playerCount: number, impostorCount: number, mode: GameMode) => {
     setTotalPlayers(playerCount);
+    setGameMode(mode);
     
     // Generate multiple random impostor positions
     const positions: number[] = [];
@@ -30,8 +47,9 @@ const Index = () => {
     }
     setImpostorPositions(positions);
     
-    // Select a random player for this game
-    const randomPlayer = allPlayers[Math.floor(Math.random() * allPlayers.length)];
+    // Select a random player from available players based on mode
+    const filteredPlayers = mode === "NBA" ? nbaPlayers : mode === "Euroleague" ? euroleaguePlayers : allPlayers;
+    const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
     setSelectedPlayer(randomPlayer);
     
     setGameState("revealing");
@@ -70,7 +88,7 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 pb-0">
         <div className="space-y-8 w-full max-w-6xl">
           {/* Title */}
           <div className="text-center space-y-2 animate-fade-in">
@@ -123,6 +141,13 @@ const Index = () => {
           </div>
         </div>
       </main>
+
+      {/* Player Carousel - shown only in setup mode */}
+      {gameState === "setup" && (
+        <div className="w-full mt-auto">
+          <PlayerCarousel players={availablePlayers} />
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-8">
