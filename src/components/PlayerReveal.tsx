@@ -42,7 +42,7 @@ export const PlayerReveal = ({
       setImageError(false);
       setImageIndex(0);
       
-      // Preload only the first image when player is revealed for faster display
+      // Preload image when player is revealed for faster display
       const imageUrls = getPlayerImageUrls(assignedPlayer);
       if (imageUrls.length > 0) {
         // Use link preload for better mobile performance
@@ -64,23 +64,36 @@ export const PlayerReveal = ({
           document.head.appendChild(prefetchLink);
         }
         
+        // Preload image in memory for instant display
         const img = new Image();
         img.src = imageUrls[0];
-        img.onload = () => {
+        img.loading = 'eager';
+        
+        // Set timeout to avoid indefinite loading
+        const timeoutId = setTimeout(() => {
           setImageLoading(false);
+        }, 5000); // 5 second timeout
+        
+        img.onload = () => {
+          clearTimeout(timeoutId);
+          setImageLoading(false);
+          setImageError(false);
+          // Cleanup preload link
           if (document.head.contains(link)) {
             document.head.removeChild(link);
           }
         };
         img.onerror = () => {
+          clearTimeout(timeoutId);
           setImageLoading(false);
-          setImageError(false); // Don't show error yet, let img tag handle it
+          setImageError(false); // Let img tag handle error display
           if (document.head.contains(link)) {
             document.head.removeChild(link);
           }
         };
         
         return () => {
+          clearTimeout(timeoutId);
           if (document.head.contains(link)) {
             document.head.removeChild(link);
           }
@@ -172,7 +185,8 @@ export const PlayerReveal = ({
                                   }`}
                                   style={{ 
                                     display: 'block',
-                                    maxHeight: 'min(calc(100vh - 300px), 250px)'
+                                    maxHeight: 'min(calc(100vh - 300px), 250px)',
+                                    imageRendering: 'optimizeQuality'
                                   }}
                                   loading="eager"
                                   decoding="async"
