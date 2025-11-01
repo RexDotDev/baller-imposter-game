@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font Face Definitions */
+@font-face {
+  font-family: 'SlamDunk';
+  src: url('/fonts/SlamDunk.ttf') format('truetype'),
+       url('/fonts/SlamDunk.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
@@ -75,7 +85,7 @@ All colors MUST be HSL.
   /* Faster carousel on mobile devices */
   @media (max-width: 768px) {
     .infinite-scroll {
-      animation: scroll-continuous 15s linear infinite;
+      animation: scroll-continuous 10s linear infinite;
     }
   }
 
@@ -151,5 +161,11 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'SlamDunk', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Fix for favicon display */
+  link[rel="icon"] {
+    background: transparent !important;
   }
 }
