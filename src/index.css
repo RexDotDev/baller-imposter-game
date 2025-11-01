@@ -68,8 +68,23 @@ All colors MUST be HSL.
   }
 
   .infinite-scroll {
-    animation: scroll-continuous 120s linear infinite;
+    animation: scroll-continuous 30s linear infinite;
     will-change: transform;
+  }
+
+  /* Faster carousel on mobile devices */
+  @media (max-width: 768px) {
+    .infinite-scroll {
+      animation: scroll-continuous 15s linear infinite;
+    }
+  }
+
+  .impostor-glow {
+    text-shadow: 
+      0 0 10px hsl(var(--destructive) / 0.8),
+      0 0 20px hsl(var(--destructive) / 0.6),
+      0 0 30px hsl(var(--destructive) / 0.4),
+      0 0 40px hsl(var(--destructive) / 0.3);
   }
 
   @keyframes scroll-continuous {
@@ -78,6 +93,53 @@ All colors MUST be HSL.
     }
     100% {
       transform: translateX(-50%);
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .fade-out {
+    animation: fade-out 0.15s ease-out forwards;
+  }
+
+  .fade-in {
+    animation: fade-in 0.2s ease-in forwards;
+  }
+
+  /* Image optimization */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    will-change: opacity;
+  }
+
+  /* Mobile image optimization */
+  @media (max-width: 640px) {
+    img {
+      max-height: 220px !important;
+      max-width: 90vw !important;
+    }
+  }
+  
+  @media (min-width: 641px) and (max-width: 768px) {
+    img {
+      max-height: 300px !important;
     }
   }
 }
