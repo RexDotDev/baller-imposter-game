@@ -11,9 +11,11 @@ const IMPOSTOR_COUNT_STORAGE_KEY = "impostor-impostor-count";
 
 interface GameSetupProps {
   onStartGame: (playerCount: number, impostorCount: number, mode: GameMode) => void;
+  onModeChange?: (mode: GameMode) => void;
+  currentMode?: GameMode;
 }
 
-export const GameSetup = ({ onStartGame }: GameSetupProps) => {
+export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupProps) => {
   const [playerCount, setPlayerCount] = useState(() => {
     // Load saved player count from localStorage
     if (typeof window !== "undefined") {
@@ -43,7 +45,10 @@ export const GameSetup = ({ onStartGame }: GameSetupProps) => {
   });
   
   const [mode, setMode] = useState<GameMode>(() => {
-    // Load saved mode from localStorage
+    // Use currentMode from parent if provided, otherwise load from localStorage
+    if (currentMode) {
+      return currentMode;
+    }
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(GAME_MODE_STORAGE_KEY);
       if (saved === "NBA" || saved === "Euroleague" || saved === "Mix") {
@@ -52,6 +57,13 @@ export const GameSetup = ({ onStartGame }: GameSetupProps) => {
     }
     return "Mix";
   });
+
+  // Update mode when currentMode prop changes
+  useEffect(() => {
+    if (currentMode && currentMode !== mode) {
+      setMode(currentMode);
+    }
+  }, [currentMode, mode]);
 
   const maxImpostors = Math.floor(playerCount / 2);
 
@@ -180,21 +192,30 @@ export const GameSetup = ({ onStartGame }: GameSetupProps) => {
           <div className="grid grid-cols-3 gap-2">
             <Button
               variant={mode === "NBA" ? "default" : "outline"}
-              onClick={() => setMode("NBA")}
+              onClick={() => {
+                setMode("NBA");
+                onModeChange?.("NBA");
+              }}
               className="w-full"
             >
               NBA
             </Button>
             <Button
               variant={mode === "Euroleague" ? "default" : "outline"}
-              onClick={() => setMode("Euroleague")}
+              onClick={() => {
+                setMode("Euroleague");
+                onModeChange?.("Euroleague");
+              }}
               className="w-full"
             >
               Euroleague
             </Button>
             <Button
               variant={mode === "Mix" ? "default" : "outline"}
-              onClick={() => setMode("Mix")}
+              onClick={() => {
+                setMode("Mix");
+                onModeChange?.("Mix");
+              }}
               className="w-full"
             >
               Mix
