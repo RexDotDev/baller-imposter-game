@@ -61,7 +61,8 @@ const Index = () => {
       setCurrentPlayer(currentPlayer + 1);
       setAssignedPlayer(null);
     } else {
-      setGameState("complete");
+      // Automatically return to home screen when all players have seen their roles
+      handleReset();
     }
   };
 
@@ -88,17 +89,19 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 pb-0">
-        <div className="space-y-8 w-full max-w-6xl">
-          {/* Title */}
-          <div className="text-center space-y-2 animate-fade-in">
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-              THE IMPOSTOR
-            </h1>
-            <p className="text-lg text-muted-foreground uppercase tracking-wider">
-              Basketball • Version
-            </p>
-          </div>
+      <main className="flex-1 flex flex-col items-center px-4 py-4 pb-0">
+        <div className="space-y-4 w-full max-w-6xl">
+          {/* Title - hide when revealing */}
+          {gameState !== "revealing" && (
+            <div className="text-center space-y-2 animate-fade-in">
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
+                THE IMPOSTOR
+              </h1>
+              <p className="text-lg text-muted-foreground uppercase tracking-wider">
+                Basketball • Version
+              </p>
+            </div>
+          )}
 
           {/* Game Content */}
           <div className="flex justify-center">
@@ -107,35 +110,15 @@ const Index = () => {
             )}
 
             {gameState === "revealing" && (
-              <PlayerReveal
-                currentPlayer={currentPlayer}
-                totalPlayers={totalPlayers}
-                isImpostor={isCurrentPlayerImpostor}
-                assignedPlayer={isCurrentPlayerImpostor ? null : assignedPlayer}
-                onContinue={handleContinue}
-                onReset={handleReset}
-              />
-            )}
-
-            {gameState === "complete" && selectedPlayer && (
-              <div className="space-y-6 w-full animate-scale-in">
-                <div className="text-center space-y-4">
-                  <h2 className="text-3xl font-bold">All players have seen their roles!</h2>
-                  <p className="text-lg text-muted-foreground">
-                    The real player for this game is: <span className="text-primary font-bold">{selectedPlayer.name}</span>
-                  </p>
-                  <p className="text-muted-foreground">
-                    Now discuss among yourselves and find the impostor!
-                  </p>
-                </div>
-                <div className="flex justify-center">
-                  <button
-                    onClick={handleReset}
-                    className="px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg glow-orange transition-all"
-                  >
-                    Start New Game
-                  </button>
-                </div>
+              <div className="w-full flex justify-center">
+                <PlayerReveal
+                  currentPlayer={currentPlayer}
+                  totalPlayers={totalPlayers}
+                  isImpostor={isCurrentPlayerImpostor}
+                  assignedPlayer={isCurrentPlayerImpostor ? null : assignedPlayer}
+                  onContinue={handleContinue}
+                  onReset={handleReset}
+                />
               </div>
             )}
           </div>
