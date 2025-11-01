@@ -106,7 +106,11 @@ const Index = () => {
           {/* Game Content */}
           <div className="flex justify-center">
             {gameState === "setup" && (
-              <GameSetup onStartGame={handleStartGame} />
+              <GameSetup 
+                onStartGame={handleStartGame}
+                onModeChange={(mode) => setGameMode(mode)}
+                currentMode={gameMode}
+              />
             )}
 
             {gameState === "revealing" && (
@@ -136,6 +140,7 @@ const Index = () => {
       <footer className="py-8">
         <div className="text-center text-sm text-muted-foreground space-y-1">
           <p>© 2025 The Impostor. All rights reserved.</p>
+          <p>project contributors</p>
         </div>
       </footer>
     </div>
