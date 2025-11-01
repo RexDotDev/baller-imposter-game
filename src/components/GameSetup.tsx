@@ -1,20 +1,75 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Minus, Plus, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 export type GameMode = "NBA" | "Euroleague" | "Mix";
 
+const GAME_MODE_STORAGE_KEY = "impostor-game-mode";
+const PLAYER_COUNT_STORAGE_KEY = "impostor-player-count";
+const IMPOSTOR_COUNT_STORAGE_KEY = "impostor-impostor-count";
+
 interface GameSetupProps {
   onStartGame: (playerCount: number, impostorCount: number, mode: GameMode) => void;
 }
 
 export const GameSetup = ({ onStartGame }: GameSetupProps) => {
-  const [playerCount, setPlayerCount] = useState(4);
-  const [impostorCount, setImpostorCount] = useState(1);
-  const [mode, setMode] = useState<GameMode>("Mix");
+  const [playerCount, setPlayerCount] = useState(() => {
+    // Load saved player count from localStorage
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(PLAYER_COUNT_STORAGE_KEY);
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        if (parsed >= 4 && parsed <= 15) {
+          return parsed;
+        }
+      }
+    }
+    return 4;
+  });
+  
+  const [impostorCount, setImpostorCount] = useState(() => {
+    // Load saved impostor count from localStorage
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(IMPOSTOR_COUNT_STORAGE_KEY);
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        if (parsed >= 0) {
+          return parsed;
+        }
+      }
+    }
+    return 1;
+  });
+  
+  const [mode, setMode] = useState<GameMode>(() => {
+    // Load saved mode from localStorage
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(GAME_MODE_STORAGE_KEY);
+      if (saved === "NBA" || saved === "Euroleague" || saved === "Mix") {
+        return saved;
+      }
+    }
+    return "Mix";
+  });
 
   const maxImpostors = Math.floor(playerCount / 2);
+
+  // Validate impostor count when player count changes
+  useEffect(() => {
+    if (impostorCount > maxImpostors) {
+      setImpostorCount(maxImpostors);
+    }
+  }, [playerCount, maxImpostors]);
+
+  // Save settings to localStorage when they change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(GAME_MODE_STORAGE_KEY, mode);
+      localStorage.setItem(PLAYER_COUNT_STORAGE_KEY, playerCount.toString());
+      localStorage.setItem(IMPOSTOR_COUNT_STORAGE_KEY, impostorCount.toString());
+    }
+  }, [mode, playerCount, impostorCount]);
 
   const incrementPlayers = () => {
     if (playerCount < 15) {
