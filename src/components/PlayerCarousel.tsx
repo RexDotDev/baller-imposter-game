@@ -81,23 +81,40 @@ export const PlayerCarousel = ({ players }: PlayerCarouselProps) => {
   // JavaScript-based animation that doesn't reset on re-render
   useEffect(() => {
     const container = animationContainerRef.current;
-    if (!container) return;
+    if (!container || shuffledPlayers.length === 0) return;
 
     const duration = getAnimationDuration();
-    const totalWidth = container.scrollWidth / 2; // Half width for seamless loop
-
+    
     const animate = (currentTime: number) => {
       if (!isAnimatingRef.current) {
         isAnimatingRef.current = true;
         startTimeRef.current = currentTime;
       }
 
+      // Calculate total width of one set
+      const firstSet = container.children[0] as HTMLElement;
+      if (!firstSet) return;
+      
+      const totalWidth = firstSet.offsetWidth;
+      
+      // If total width is 0 or very small, wait a bit and retry
+      if (totalWidth < 100) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
       const elapsed = (currentTime - startTimeRef.current) / 1000; // Convert to seconds
       const progress = (elapsed % duration) / duration;
       const offset = -progress * totalWidth;
       
-      currentOffsetRef.current = offset;
-      container.style.transform = `translateX(${offset}px)`;
+      // Reset to start position when we've moved one full set width
+      if (Math.abs(offset) >= totalWidth) {
+        startTimeRef.current = currentTime;
+        container.style.transform = `translateX(0px)`;
+      } else {
+        currentOffsetRef.current = offset;
+        container.style.transform = `translateX(${offset}px)`;
+      }
       
       animationFrameRef.current = requestAnimationFrame(animate);
     };
@@ -111,7 +128,7 @@ export const PlayerCarousel = ({ players }: PlayerCarouselProps) => {
         isAnimatingRef.current = false;
       }
     };
-  }, []);
+  }, [shuffledPlayers.length]);
 
   // Only reshuffle if the players list actually changed (by IDs)
   useEffect(() => {
@@ -233,12 +250,29 @@ export const PlayerCarousel = ({ players }: PlayerCarouselProps) => {
   };
 
 
+  // Ensure we have enough players for seamless loop
+  if (shuffledPlayers.length === 0) {
+    return null;
+  }
+
+  // If we have very few players, duplicate them multiple times for smooth loop
+  const getDisplayPlayers = () => {
+    if (shuffledPlayers.length < 10) {
+      // Duplicate players multiple times to ensure smooth scrolling
+      const multiplier = Math.ceil(20 / shuffledPlayers.length);
+      return Array(multiplier).fill(shuffledPlayers).flat();
+    }
+    return shuffledPlayers;
+  };
+
+  const displayPlayers = getDisplayPlayers();
+
   return (
     <div className="w-full bg-card/50 backdrop-blur border-t border-game-border py-4 overflow-hidden relative">
       <div ref={animationContainerRef} className="flex" style={{ willChange: 'transform' }}>
         {/* First set */}
         <div className="flex gap-0 flex-shrink-0">
-          {shuffledPlayers.map((player, index) => (
+          {displayPlayers.map((player, index) => (
             <PlayerCard 
               key={`first-${player.id}-${index}`} 
               player={player} 
@@ -249,12 +283,12 @@ export const PlayerCarousel = ({ players }: PlayerCarouselProps) => {
         </div>
         {/* Duplicate set for seamless loop */}
         <div className="flex gap-0 flex-shrink-0">
-          {shuffledPlayers.map((player, index) => (
+          {displayPlayers.map((player, index) => (
             <PlayerCard 
               key={`second-${player.id}-${index}`} 
               player={player} 
               uniqueKey={`second-${player.id}-${index}`} 
-              index={index + shuffledPlayers.length}
+              index={index + displayPlayers.length}
             />
           ))}
         </div>

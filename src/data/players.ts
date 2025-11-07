@@ -91,6 +91,15 @@ export const nbaPlayers: Player[] = [
   { id: 92, name: "RJ Barrett", team: "Toronto Raptors", league: "NBA", imageUrl: "" },
   { id: 93, name: "CJ McCollum", team: "Washington Wizards", league: "NBA", imageUrl: "" },
   { id: 95, name: "Bradley Beal", team: "Los Angeles Clippers", league: "NBA", imageUrl: "" },
+  { id: 96, name: "Jayson Tatum", team: "Boston Celtics", league: "NBA", imageUrl: "" },
+  { id: 97, name: "Joel Embiid", team: "Philadelphia 76ers", league: "NBA", imageUrl: "" },
+  { id: 98, name: "Damian Lillard", team: "Milwaukee Bucks", league: "NBA", imageUrl: "" },
+  { id: 99, name: "Kyrie Irving", team: "Dallas Mavericks", league: "NBA", imageUrl: "" },
+  { id: 100, name: "Klay Thompson", team: "Dallas Mavericks", league: "NBA", imageUrl: "" },
+  { id: 101, name: "Russell Westbrook", team: "Los Angeles Clippers", league: "NBA", imageUrl: "" },
+  { id: 102, name: "Chris Paul", team: "San Antonio Spurs", league: "NBA", imageUrl: "" },
+  { id: 103, name: "Tyrese Haliburton", team: "Indiana Pacers", league: "NBA", imageUrl: "" },
+  { id: 104, name: "Lonzo Ball", team: "Chicago Bulls", league: "NBA", imageUrl: "" },
 ];
 
 // Euroleague Players

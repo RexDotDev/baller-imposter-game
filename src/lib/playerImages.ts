@@ -91,6 +91,15 @@ const playerImageMap: Record<string, string[]> = {
   "RJ Barrett": ["RJBarrett-1729035362858-small.png"],
   "CJ McCollum": ["CJMcCollum_MediaDay-1760478709261-small.png"],
   "Bradley Beal": ["BradleyBeal-1760463097105-small.png"],
+  "Jayson Tatum": ["JaysonTatum-1738079552131-xsmall.png", "JasonTatum.webp"],
+  "Joel Embiid": ["JoelEmbiid-1738078292802-xsmall.png", "JoelEmbiid.png"],
+  "Damian Lillard": ["DamianLillard-1728928022374-small.png", "DamianLillard-1738077709905-xsmall.png"],
+  "Kyrie Irving": ["KyrieIrving-1738079157989-xsmall.png", "KyrieIrving-1728927928732-small.png", "KyrieIrving.webp"],
+  "Klay Thompson": ["KlayThompson.avif"],
+  "Russell Westbrook": ["RussWest.avif"],
+  "Chris Paul": ["ChrisPaul.png"],
+  "Tyrese Haliburton": ["TyreseHaliburton-1738079210009-xsmall.png"],
+  "Lonzo Ball": ["LonzoBall-1751224337212-small.png"],
 
 };
 
