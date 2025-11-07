@@ -51,7 +51,7 @@ export const PlayerReveal = ({
         link.as = 'image';
         link.href = imageUrls[0];
         if ('fetchPriority' in link) {
-          (link as any).fetchPriority = 'high';
+          (link as HTMLLinkElement & { fetchPriority?: string }).fetchPriority = 'high';
         }
         document.head.appendChild(link);
         
@@ -202,7 +202,7 @@ export const PlayerReveal = ({
                                     setImageLoading(false);
                                     setImageError(false);
                                     // Force reflow for smooth transition
-                                    (e.target as HTMLImageElement).offsetHeight;
+                                    void (e.target as HTMLImageElement).offsetHeight;
                                   }}
                                   onError={(e) => {
                                     console.error("Failed to load image:", displayUrl, "Player:", assignedPlayer.name, "League:", assignedPlayer.league);

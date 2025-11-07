@@ -8,7 +8,7 @@
  */
 export function filenameToPlayerName(filename: string): string {
   // Remove .png or .avif extension
-  let name = filename.replace(/\.(png|avif)$/i, "");
+  const name = filename.replace(/\.(png|avif)$/i, "");
   
   // Handle special cases first
   const specialCases: Record<string, string> = {
@@ -33,7 +33,7 @@ export function filenameToPlayerName(filename: string): string {
   
   // Insert space before capital letters (but not at the start)
   // Also handle special cases like hyphens
-  let result = name
+  const result = name
     .replace(/([a-z])([A-Z])/g, "$1 $2") // Space before capital after lowercase
     .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2"); // Space before capital sequence followed by lowercase
   

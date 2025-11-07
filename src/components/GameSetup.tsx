@@ -72,7 +72,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
     if (impostorCount > maxImpostors) {
       setImpostorCount(maxImpostors);
     }
-  }, [playerCount, maxImpostors]);
+  }, [playerCount, maxImpostors, impostorCount]);
 
   // Save settings to localStorage when they change
   useEffect(() => {
