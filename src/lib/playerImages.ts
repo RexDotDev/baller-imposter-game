@@ -149,7 +149,9 @@ export function getPlayerImageUrls(player: Player): string[] {
   if (player.league === "Euroleague") {
     // Convert player name to filename format
     const imageName = getEuroleagueImageName(player.name);
-    const euroleaguePath = `/euroleague/${encodeURIComponent(imageName)}.png`;
+    // Check if it's Quincy Miller (has .avif extension)
+    const extension = imageName === "QuincyMiller" ? "avif" : "png";
+    const euroleaguePath = `/euroleague/${encodeURIComponent(imageName)}.${extension}`;
     return [euroleaguePath];
   }
 

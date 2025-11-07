@@ -145,10 +145,17 @@ export const PlayerReveal = ({
               className={`space-y-3 sm:space-y-4 md:space-y-6 ${isTransitioning ? 'fade-out' : 'fade-in'}`}
             >
               {isImpostor ? (
-            <div className="text-center flex flex-col items-center justify-center min-h-[180px] sm:min-h-[250px] md:min-h-[400px]">
+            <div className="text-center flex flex-col items-center justify-center min-h-[180px] sm:min-h-[250px] md:min-h-[400px] space-y-4">
               <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-destructive impostor-glow">
                 IMPOSTOR
               </h3>
+              <div className="flex justify-center mt-4 pr-12">
+                <img 
+                  src="/Imposter.png" 
+                  alt="Imposter" 
+                  className="max-w-xs md:max-w-sm h-auto"
+                />
+              </div>
             </div>
           ) : assignedPlayer ? (
               <div className="text-center space-y-2 sm:space-y-3 md:space-y-4">

@@ -7,8 +7,8 @@
  * Example: "PjDozier" -> "PJ Dozier"
  */
 export function filenameToPlayerName(filename: string): string {
-  // Remove .png extension
-  let name = filename.replace(/\.png$/i, "");
+  // Remove .png or .avif extension
+  let name = filename.replace(/\.(png|avif)$/i, "");
   
   // Handle special cases first
   const specialCases: Record<string, string> = {
@@ -165,7 +165,17 @@ export function getEuroleagueTeam(playerName: string): string {
     "Arijan Lakic": "Euroleague",
     "Aleksej Pokusevski": "Euroleague",
     "Alen Smailagic": "Euroleague",
+    "Billy Baron": "Euroleague",
+    "Bogdan Bogdanovic": "Euroleague",
+    "Charles Jenkins": "Euroleague",
     "Chris Jones": "Euroleague",
+    "James Gist": "Euroleague",
+    "Luigi Datome": "Euroleague",
+    "Maik Zirbes": "Euroleague",
+    "Marcus Williams": "Euroleague",
+    "Milos Teodosic": "Euroleague",
+    "Nemanja Bjelica": "Euroleague",
+    "Quincy Miller": "Euroleague",
     "Timothe Luwawu-Cabarrot": "Euroleague",
   };
   
