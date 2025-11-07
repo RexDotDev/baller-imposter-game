@@ -8,7 +8,7 @@ export interface Player {
   imageUrl: string;
 }
 
-// Top 100 NBA Players (updated from ranking)
+// NBA Players (only players with available images)
 export const nbaPlayers: Player[] = [
   { id: 1, name: "Nikola Jokic", team: "Denver Nuggets", league: "NBA", imageUrl: "" },
   { id: 2, name: "Shai Gilgeous-Alexander", team: "Oklahoma City Thunder", league: "NBA", imageUrl: "" },
@@ -67,7 +67,6 @@ export const nbaPlayers: Player[] = [
   { id: 55, name: "Mikal Bridges", team: "New York Knicks", league: "NBA", imageUrl: "" },
   { id: 56, name: "Alex Caruso", team: "Oklahoma City Thunder", league: "NBA", imageUrl: "" },
   { id: 57, name: "Austin Reaves", team: "Los Angeles Lakers", league: "NBA", imageUrl: "" },
-  { id: 58, name: "Jaden McDaniels", team: "Minnesota Timberwolves", league: "NBA", imageUrl: "" },
   { id: 59, name: "Brandon Ingram", team: "Toronto Raptors", league: "NBA", imageUrl: "" },
   { id: 60, name: "Jalen Suggs", team: "Orlando Magic", league: "NBA", imageUrl: "" },
   { id: 61, name: "Cooper Flagg", team: "Dallas Mavericks", league: "NBA", imageUrl: "" },
@@ -89,27 +88,12 @@ export const nbaPlayers: Player[] = [
   { id: 77, name: "Michael Porter Jr.", team: "Brooklyn Nets", league: "NBA", imageUrl: "" },
   { id: 78, name: "Josh Hart", team: "New York Knicks", league: "NBA", imageUrl: "" },
   { id: 79, name: "Christian Braun", team: "Denver Nuggets", league: "NBA", imageUrl: "" },
-  { id: 80, name: "Tari Eason", team: "Houston Rockets", league: "NBA", imageUrl: "" },
   { id: 81, name: "Mitchell Robinson", team: "New York Knicks", league: "NBA", imageUrl: "" },
-  { id: 82, name: "De'Andre Hunter", team: "Cleveland Cavaliers", league: "NBA", imageUrl: "" },
-  { id: 83, name: "Jalen Duren", team: "Detroit Pistons", league: "NBA", imageUrl: "" },
-  { id: 84, name: "Toumani Camara", team: "Portland Trail Blazers", league: "NBA", imageUrl: "" },
-  { id: 85, name: "Brandon Miller", team: "Charlotte Hornets", league: "NBA", imageUrl: "" },
-  { id: 86, name: "Devin Vassell", team: "San Antonio Spurs", league: "NBA", imageUrl: "" },
-  { id: 87, name: "Jakob Poeltl", team: "Toronto Raptors", league: "NBA", imageUrl: "" },
   { id: 88, name: "Dillon Brooks", team: "Phoenix Suns", league: "NBA", imageUrl: "" },
-  { id: 89, name: "Aaron Nesmith", team: "Indiana Pacers", league: "NBA", imageUrl: "" },
-  { id: 90, name: "Herb Jones", team: "New Orleans Pelicans", league: "NBA", imageUrl: "" },
   { id: 91, name: "Ausar Thompson", team: "Detroit Pistons", league: "NBA", imageUrl: "" },
   { id: 92, name: "RJ Barrett", team: "Toronto Raptors", league: "NBA", imageUrl: "" },
   { id: 93, name: "CJ McCollum", team: "Washington Wizards", league: "NBA", imageUrl: "" },
-  { id: 94, name: "Cason Wallace", team: "Oklahoma City Thunder", league: "NBA", imageUrl: "" },
   { id: 95, name: "Bradley Beal", team: "Los Angeles Clippers", league: "NBA", imageUrl: "" },
-  { id: 96, name: "Anfernee Simons", team: "Boston Celtics", league: "NBA", imageUrl: "" },
-  { id: 97, name: "Jabari Smith Jr.", team: "Houston Rockets", league: "NBA", imageUrl: "" },
-  { id: 98, name: "T.J. McConnell", team: "Indiana Pacers", league: "NBA", imageUrl: "" },
-  { id: 99, name: "Santi Aldama", team: "Memphis Grizzlies", league: "NBA", imageUrl: "" },
-  { id: 100, name: "Jaden Ivey", team: "Detroit Pistons", league: "NBA", imageUrl: "" },
 ];
 
 // Euroleague Players
