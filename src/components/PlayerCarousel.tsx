@@ -70,12 +70,10 @@ export const PlayerCarousel = ({ players }: PlayerCarouselProps) => {
   const currentOffsetRef = useRef<number>(0);
   const isAnimatingRef = useRef<boolean>(false);
 
-  // Calculate animation duration based on screen size
+  // Calculate animation duration - same speed for all modes
   const getAnimationDuration = () => {
-    if (typeof window !== "undefined" && window.innerWidth <= 768) {
-      return 420; // 60 seconds on mobile
-    }
-    return 420; // 120 seconds on desktop
+    // Same duration for all screen sizes and modes (420 seconds = 7 minutes)
+    return 420;
   };
 
   // JavaScript-based animation that doesn't reset on re-render

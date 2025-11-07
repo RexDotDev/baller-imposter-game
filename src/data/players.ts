@@ -48,7 +48,6 @@ export const nbaPlayers: Player[] = [
   { id: 36, name: "Derrick White", team: "Boston Celtics", league: "NBA", imageUrl: "" },
   { id: 37, name: "Ivica Zubac", team: "Los Angeles Clippers", league: "NBA", imageUrl: "" },
   { id: 38, name: "Franz Wagner", team: "Orlando Magic", league: "NBA", imageUrl: "" },
-  { id: 39, name: "Jalen Johnson", team: "Atlanta Hawks", league: "NBA", imageUrl: "" },
   { id: 40, name: "OG Anunoby", team: "New York Knicks", league: "NBA", imageUrl: "" },
   { id: 41, name: "Aaron Gordon", team: "Denver Nuggets", league: "NBA", imageUrl: "" },
   { id: 42, name: "Scottie Barnes", team: "Toronto Raptors", league: "NBA", imageUrl: "" },
