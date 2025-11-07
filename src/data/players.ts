@@ -70,7 +70,6 @@ export const nbaPlayers: Player[] = [
   { id: 61, name: "Cooper Flagg", team: "Dallas Mavericks", league: "NBA", imageUrl: "" },
   { id: 62, name: "Cam Johnson", team: "Denver Nuggets", league: "NBA", imageUrl: "" },
   { id: 63, name: "Myles Turner", team: "Milwaukee Bucks", league: "NBA", imageUrl: "" },
-  { id: 64, name: "Andrew Nembhard", team: "Indiana Pacers", league: "NBA", imageUrl: "" },
   { id: 65, name: "Isaiah Hartenstein", team: "Oklahoma City Thunder", league: "NBA", imageUrl: "" },
   { id: 66, name: "Norm Powell", team: "Miami Heat", league: "NBA", imageUrl: "" },
   { id: 67, name: "Kristaps Porzingis", team: "Atlanta Hawks", league: "NBA", imageUrl: "" },
