@@ -29,7 +29,7 @@ const Index = () => {
   }, [gameMode]);
 
   const isTeamMode = useMemo(() => {
-    return gameMode === "NBA Teams" || gameMode === "Euroleague Teams" || gameMode === "Mix Logos";
+    return gameMode === "NBA Teams" || gameMode === "Euroleague Teams" || gameMode === "Mix Teams";
   }, [gameMode]);
 
   // Filter players based on mode
@@ -53,7 +53,7 @@ const Index = () => {
         return nbaTeams;
       case "Euroleague Teams":
         return euroleagueTeams;
-      case "Mix Logos":
+      case "Mix Teams":
         return allTeams;
       default:
         return [];
@@ -93,7 +93,7 @@ const Index = () => {
       const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
       setSelectedPlayer(randomPlayer);
       setSelectedTeam(null);
-    } else if (mode === "NBA Teams" || mode === "Euroleague Teams" || mode === "Mix Logos") {
+    } else if (mode === "NBA Teams" || mode === "Euroleague Teams" || mode === "Mix Teams") {
       const filteredTeams = mode === "NBA Teams" ? nbaTeams : mode === "Euroleague Teams" ? euroleagueTeams : allTeams;
       if (filteredTeams.length > 0) {
         const randomTeam = filteredTeams[Math.floor(Math.random() * filteredTeams.length)];

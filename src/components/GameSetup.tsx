@@ -3,7 +3,7 @@ import { Minus, Plus, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-export type GameMode = "NBA" | "Euroleague" | "Mix Players" | "NBA Teams" | "Euroleague Teams" | "Mix Logos" | "Mix Everything";
+export type GameMode = "NBA" | "Euroleague" | "Mix Players" | "NBA Teams" | "Euroleague Teams" | "Mix Teams" | "Mix Everything";
 
 const GAME_MODE_STORAGE_KEY = "impostor-game-mode";
 const PLAYER_COUNT_STORAGE_KEY = "impostor-player-count";
@@ -51,13 +51,17 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
     }
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(GAME_MODE_STORAGE_KEY);
-      const validModes: GameMode[] = ["NBA", "Euroleague", "Mix Players", "NBA Teams", "Euroleague Teams", "Mix Logos", "Mix Everything"];
+      const validModes: GameMode[] = ["NBA", "Euroleague", "Mix Players", "NBA Teams", "Euroleague Teams", "Mix Teams", "Mix Everything"];
       if (saved && validModes.includes(saved as GameMode)) {
         return saved as GameMode;
       }
       // Backward compatibility: convert old "Mix" to "Mix Players"
       if (saved === "Mix") {
         return "Mix Players";
+      }
+      // Backward compatibility: convert old "Mix Logos" to "Mix Teams"
+      if (saved === "Mix Logos") {
+        return "Mix Teams";
       }
     }
     return "Mix Players";
@@ -246,14 +250,14 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
               Euroleague Teams
             </Button>
             <Button
-              variant={mode === "Mix Logos" ? "default" : "outline"}
+              variant={mode === "Mix Teams" ? "default" : "outline"}
               onClick={() => {
-                setMode("Mix Logos");
-                onModeChange?.("Mix Logos");
+                setMode("Mix Teams");
+                onModeChange?.("Mix Teams");
               }}
               className="w-full"
             >
-              Mix Logos
+              Mix Teams
             </Button>
             <Button
               variant={mode === "Mix Everything" ? "default" : "outline"}
