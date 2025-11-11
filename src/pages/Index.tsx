@@ -2,8 +2,12 @@ import { useState, useMemo } from "react";
 import { HowToPlay } from "@/components/HowToPlay";
 import { GameSetup, type GameMode } from "@/components/GameSetup";
 import { PlayerReveal } from "@/components/PlayerReveal";
+import { TeamReveal } from "@/components/TeamReveal";
 import { PlayerCarousel } from "@/components/PlayerCarousel";
+import { TeamCarousel } from "@/components/TeamCarousel";
+import { MixedCarousel } from "@/components/MixedCarousel";
 import { allPlayers, nbaPlayers, euroleaguePlayers, Player } from "@/data/players";
+import { allTeams, nbaTeams, euroleagueTeams, Team } from "@/data/teams";
 
 type GameState = "setup" | "revealing" | "complete";
 
@@ -12,10 +16,21 @@ const Index = () => {
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [totalPlayers, setTotalPlayers] = useState(4);
   const [assignedPlayer, setAssignedPlayer] = useState<Player | null>(null);
+  const [assignedTeam, setAssignedTeam] = useState<Team | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [gameMode, setGameMode] = useState<GameMode>("Mix");
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+  const [gameMode, setGameMode] = useState<GameMode>("Mix Players");
 
   const [impostorPositions, setImpostorPositions] = useState<number[]>([]);
+
+  // Determine if mode uses players or teams
+  const isPlayerMode = useMemo(() => {
+    return gameMode === "NBA" || gameMode === "Euroleague" || gameMode === "Mix Players";
+  }, [gameMode]);
+
+  const isTeamMode = useMemo(() => {
+    return gameMode === "NBA Teams" || gameMode === "Euroleague Teams" || gameMode === "Mix Logos";
+  }, [gameMode]);
 
   // Filter players based on mode
   const availablePlayers = useMemo(() => {
@@ -24,11 +39,36 @@ const Index = () => {
         return nbaPlayers;
       case "Euroleague":
         return euroleaguePlayers;
-      case "Mix":
+      case "Mix Players":
         return allPlayers;
       default:
-        return allPlayers;
+        return [];
     }
+  }, [gameMode]);
+
+  // Filter teams based on mode
+  const availableTeams = useMemo(() => {
+    switch (gameMode) {
+      case "NBA Teams":
+        return nbaTeams;
+      case "Euroleague Teams":
+        return euroleagueTeams;
+      case "Mix Logos":
+        return allTeams;
+      default:
+        return [];
+    }
+  }, [gameMode]);
+
+  // Combined items for Mix Everything mode
+  const availableItems = useMemo(() => {
+    if (gameMode === "Mix Everything") {
+      return {
+        players: allPlayers,
+        teams: allTeams,
+      };
+    }
+    return { players: [], teams: [] };
   }, [gameMode]);
 
   const handleStartGame = (playerCount: number, impostorCount: number, mode: GameMode) => {
@@ -47,10 +87,48 @@ const Index = () => {
     }
     setImpostorPositions(positions);
     
-    // Select a random player from available players based on mode
-    const filteredPlayers = mode === "NBA" ? nbaPlayers : mode === "Euroleague" ? euroleaguePlayers : allPlayers;
-    const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-    setSelectedPlayer(randomPlayer);
+    // Select random item based on mode
+    if (mode === "NBA" || mode === "Euroleague" || mode === "Mix Players") {
+      const filteredPlayers = mode === "NBA" ? nbaPlayers : mode === "Euroleague" ? euroleaguePlayers : allPlayers;
+      const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
+      setSelectedPlayer(randomPlayer);
+      setSelectedTeam(null);
+    } else if (mode === "NBA Teams" || mode === "Euroleague Teams" || mode === "Mix Logos") {
+      const filteredTeams = mode === "NBA Teams" ? nbaTeams : mode === "Euroleague Teams" ? euroleagueTeams : allTeams;
+      if (filteredTeams.length > 0) {
+        const randomTeam = filteredTeams[Math.floor(Math.random() * filteredTeams.length)];
+        setSelectedTeam(randomTeam);
+        setSelectedPlayer(null);
+      } else {
+        // Fallback to players if no teams available
+        const filteredPlayers = allPlayers;
+        const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
+        setSelectedPlayer(randomPlayer);
+        setSelectedTeam(null);
+      }
+    } else if (mode === "Mix Everything") {
+      // Randomly choose between player and team
+      const totalItems = allPlayers.length + allTeams.length;
+      if (totalItems > 0) {
+        const randomIndex = Math.floor(Math.random() * totalItems);
+        if (randomIndex < allPlayers.length && allPlayers.length > 0) {
+          // It's a Player
+          const randomPlayer = allPlayers[randomIndex];
+          setSelectedPlayer(randomPlayer);
+          setSelectedTeam(null);
+        } else if (allTeams.length > 0) {
+          // It's a Team
+          const randomTeam = allTeams[randomIndex - allPlayers.length];
+          setSelectedTeam(randomTeam);
+          setSelectedPlayer(null);
+        } else {
+          // Fallback to players if no teams
+          const randomPlayer = allPlayers[Math.floor(Math.random() * allPlayers.length)];
+          setSelectedPlayer(randomPlayer);
+          setSelectedTeam(null);
+        }
+      }
+    }
     
     setGameState("revealing");
     setCurrentPlayer(1);
@@ -60,6 +138,7 @@ const Index = () => {
     if (currentPlayer < totalPlayers) {
       setCurrentPlayer(currentPlayer + 1);
       setAssignedPlayer(null);
+      setAssignedTeam(null);
     } else {
       // Automatically return to home screen when all players have seen their roles
       handleReset();
@@ -70,15 +149,21 @@ const Index = () => {
     setGameState("setup");
     setCurrentPlayer(1);
     setAssignedPlayer(null);
+    setAssignedTeam(null);
     setSelectedPlayer(null);
+    setSelectedTeam(null);
     setImpostorPositions([]);
   };
 
   const isCurrentPlayerImpostor = impostorPositions.includes(currentPlayer);
 
-  // Set the assigned player when revealing
-  if (gameState === "revealing" && !assignedPlayer && !isCurrentPlayerImpostor) {
-    setAssignedPlayer(selectedPlayer);
+  // Set the assigned player/team when revealing
+  if (gameState === "revealing" && !assignedPlayer && !assignedTeam && !isCurrentPlayerImpostor) {
+    if (selectedPlayer) {
+      setAssignedPlayer(selectedPlayer);
+    } else if (selectedTeam) {
+      setAssignedTeam(selectedTeam);
+    }
   }
 
   return (
@@ -115,24 +200,46 @@ const Index = () => {
 
             {gameState === "revealing" && (
               <div className="w-full flex justify-center">
-                <PlayerReveal
-                  currentPlayer={currentPlayer}
-                  totalPlayers={totalPlayers}
-                  isImpostor={isCurrentPlayerImpostor}
-                  assignedPlayer={isCurrentPlayerImpostor ? null : assignedPlayer}
-                  onContinue={handleContinue}
-                  onReset={handleReset}
-                />
+                {selectedPlayer || (gameMode === "Mix Everything" && assignedPlayer) ? (
+                  <PlayerReveal
+                    currentPlayer={currentPlayer}
+                    totalPlayers={totalPlayers}
+                    isImpostor={isCurrentPlayerImpostor}
+                    assignedPlayer={isCurrentPlayerImpostor ? null : assignedPlayer}
+                    onContinue={handleContinue}
+                    onReset={handleReset}
+                  />
+                ) : (
+                  <TeamReveal
+                    currentPlayer={currentPlayer}
+                    totalPlayers={totalPlayers}
+                    isImpostor={isCurrentPlayerImpostor}
+                    assignedTeam={isCurrentPlayerImpostor ? null : assignedTeam}
+                    onContinue={handleContinue}
+                    onReset={handleReset}
+                  />
+                )}
               </div>
             )}
           </div>
         </div>
       </main>
 
-      {/* Player Carousel - shown only in setup mode */}
+      {/* Player/Team Carousel - shown only in setup mode */}
       {gameState === "setup" && (
         <div className="w-full mt-auto">
-          <PlayerCarousel players={availablePlayers} />
+          {isPlayerMode && availablePlayers.length > 0 && (
+            <PlayerCarousel players={availablePlayers} />
+          )}
+          {isTeamMode && availableTeams.length > 0 && (
+            <TeamCarousel teams={availableTeams} />
+          )}
+          {gameMode === "Mix Everything" && (
+            <MixedCarousel 
+              players={availableItems.players} 
+              teams={availableItems.teams} 
+            />
+          )}
         </div>
       )}
 
