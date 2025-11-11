@@ -77,7 +77,7 @@ export const MixedCarousel = ({ players, teams }: MixedCarouselProps) => {
 
   // Calculate animation duration - faster for mixed content
   const getAnimationDuration = () => {
-    return 210; // 3.5 minutes - faster since it includes teams
+    return 285; // 1.75 minutes - much faster since it includes teams
   };
 
   // JavaScript-based animation that doesn't reset on re-render

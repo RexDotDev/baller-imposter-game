@@ -71,8 +71,8 @@ export const TeamCarousel = ({ teams }: TeamCarouselProps) => {
 
   // Calculate animation duration - faster for teams
   const getAnimationDuration = () => {
-    // Faster duration for teams (210 seconds = 3.5 minutes)
-    return 210;
+    // Much faster duration for teams (105 seconds = 1.75 minutes)
+    return 55;
   };
 
   // JavaScript-based animation that doesn't reset on re-render
