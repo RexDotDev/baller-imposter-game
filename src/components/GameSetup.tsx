@@ -3,7 +3,7 @@ import { Minus, Plus, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-export type GameMode = "NBA" | "Euroleague" | "Mix";
+export type GameMode = "NBA" | "Euroleague" | "Mix Players" | "NBA Teams" | "Euroleague Teams" | "Mix Logos" | "Mix Everything";
 
 const GAME_MODE_STORAGE_KEY = "impostor-game-mode";
 const PLAYER_COUNT_STORAGE_KEY = "impostor-player-count";
@@ -51,11 +51,16 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
     }
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(GAME_MODE_STORAGE_KEY);
-      if (saved === "NBA" || saved === "Euroleague" || saved === "Mix") {
-        return saved;
+      const validModes: GameMode[] = ["NBA", "Euroleague", "Mix Players", "NBA Teams", "Euroleague Teams", "Mix Logos", "Mix Everything"];
+      if (saved && validModes.includes(saved as GameMode)) {
+        return saved as GameMode;
+      }
+      // Backward compatibility: convert old "Mix" to "Mix Players"
+      if (saved === "Mix") {
+        return "Mix Players";
       }
     }
-    return "Mix";
+    return "Mix Players";
   });
 
   // Update mode when currentMode prop changes
@@ -117,7 +122,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
     <Card className="p-8 max-w-2xl w-full bg-card/80 backdrop-blur border-game-border animate-scale-in">
       <div className="space-y-6">
         <p className="text-muted-foreground text-center">
-          The AI automatically chooses a famous basketball player for this match.
+          The AI automatically chooses a basketball player or team for this match.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -189,7 +194,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
         {/* Mode Selector */}
         <div className="space-y-3">
           <label className="text-sm font-medium">Game Mode</label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             <Button
               variant={mode === "NBA" ? "default" : "outline"}
               onClick={() => {
@@ -198,7 +203,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
               }}
               className="w-full"
             >
-              NBA
+              NBA Players
             </Button>
             <Button
               variant={mode === "Euroleague" ? "default" : "outline"}
@@ -208,17 +213,57 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
               }}
               className="w-full"
             >
-              Euroleague
+              Euroleague Players
             </Button>
             <Button
-              variant={mode === "Mix" ? "default" : "outline"}
+              variant={mode === "Mix Players" ? "default" : "outline"}
               onClick={() => {
-                setMode("Mix");
-                onModeChange?.("Mix");
+                setMode("Mix Players");
+                onModeChange?.("Mix Players");
               }}
               className="w-full"
             >
-              Mix
+              Mix Players
+            </Button>
+            <Button
+              variant={mode === "NBA Teams" ? "default" : "outline"}
+              onClick={() => {
+                setMode("NBA Teams");
+                onModeChange?.("NBA Teams");
+              }}
+              className="w-full"
+            >
+              NBA Teams
+            </Button>
+            <Button
+              variant={mode === "Euroleague Teams" ? "default" : "outline"}
+              onClick={() => {
+                setMode("Euroleague Teams");
+                onModeChange?.("Euroleague Teams");
+              }}
+              className="w-full"
+            >
+              Euroleague Teams
+            </Button>
+            <Button
+              variant={mode === "Mix Logos" ? "default" : "outline"}
+              onClick={() => {
+                setMode("Mix Logos");
+                onModeChange?.("Mix Logos");
+              }}
+              className="w-full"
+            >
+              Mix Logos
+            </Button>
+            <Button
+              variant={mode === "Mix Everything" ? "default" : "outline"}
+              onClick={() => {
+                setMode("Mix Everything");
+                onModeChange?.("Mix Everything");
+              }}
+              className="w-full"
+            >
+              Mix Everything
             </Button>
           </div>
         </div>
