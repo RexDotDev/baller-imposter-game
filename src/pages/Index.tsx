@@ -89,19 +89,67 @@ const Index = () => {
     setImpostorPositions(positions);
     
     // Select random item based on mode using cryptographically secure random
-    if (mode === "NBA" || mode === "Euroleague" || mode === "Mix Players") {
-      const filteredPlayers = mode === "NBA" ? nbaPlayers : mode === "Euroleague" ? euroleaguePlayers : allPlayers;
-      const randomPlayer = getRandomElement(filteredPlayers);
+    if (mode === "NBA") {
+      const randomPlayer = getRandomElement(nbaPlayers);
       if (randomPlayer) {
         setSelectedPlayer(randomPlayer);
         setSelectedTeam(null);
       }
-    } else if (mode === "NBA Teams" || mode === "Euroleague Teams" || mode === "Mix Teams") {
-      const filteredTeams = mode === "NBA Teams" ? nbaTeams : mode === "Euroleague Teams" ? euroleagueTeams : allTeams;
-      const randomTeam = getRandomElement(filteredTeams);
+    } else if (mode === "Euroleague") {
+      const randomPlayer = getRandomElement(euroleaguePlayers);
+      if (randomPlayer) {
+        setSelectedPlayer(randomPlayer);
+        setSelectedTeam(null);
+      }
+    } else if (mode === "Mix Players") {
+      // First randomly choose a category (50% chance each)
+      const playerCategories = [
+        { type: 'nba-players', data: nbaPlayers },
+        { type: 'euroleague-players', data: euroleaguePlayers }
+      ];
+      
+      const availableCategories = playerCategories.filter(cat => cat.data.length > 0);
+      
+      if (availableCategories.length > 0) {
+        const randomCategory = getRandomElement(availableCategories);
+        if (randomCategory) {
+          const randomPlayer = getRandomElement(randomCategory.data);
+          if (randomPlayer) {
+            setSelectedPlayer(randomPlayer);
+            setSelectedTeam(null);
+          }
+        }
+      }
+    } else if (mode === "NBA Teams") {
+      const randomTeam = getRandomElement(nbaTeams);
       if (randomTeam) {
         setSelectedTeam(randomTeam);
         setSelectedPlayer(null);
+      }
+    } else if (mode === "Euroleague Teams") {
+      const randomTeam = getRandomElement(euroleagueTeams);
+      if (randomTeam) {
+        setSelectedTeam(randomTeam);
+        setSelectedPlayer(null);
+      }
+    } else if (mode === "Mix Teams") {
+      // First randomly choose a category (50% chance each)
+      const teamCategories = [
+        { type: 'nba-teams', data: nbaTeams },
+        { type: 'euroleague-teams', data: euroleagueTeams }
+      ];
+      
+      const availableCategories = teamCategories.filter(cat => cat.data.length > 0);
+      
+      if (availableCategories.length > 0) {
+        const randomCategory = getRandomElement(availableCategories);
+        if (randomCategory) {
+          const randomTeam = getRandomElement(randomCategory.data);
+          if (randomTeam) {
+            setSelectedTeam(randomTeam);
+            setSelectedPlayer(null);
+          }
+        }
       } else {
         // Fallback to players if no teams available
         const randomPlayer = getRandomElement(allPlayers);
@@ -111,19 +159,36 @@ const Index = () => {
         }
       }
     } else if (mode === "Mix Everything") {
-      // Randomly choose between player and team
-      const allItems = [...allPlayers, ...allTeams];
-      const randomItem = getRandomElement(allItems);
-      if (randomItem) {
-        // Check if it's a Player or Team by checking if it has 'team' property
-        if ('team' in randomItem) {
-          // It's a Player
-          setSelectedPlayer(randomItem as Player);
-          setSelectedTeam(null);
-        } else {
-          // It's a Team
-          setSelectedTeam(randomItem as Team);
-          setSelectedPlayer(null);
+      // First randomly choose a category (each has 25% chance)
+      const categories = [
+        { type: 'nba-players', data: nbaPlayers },
+        { type: 'nba-teams', data: nbaTeams },
+        { type: 'euroleague-players', data: euroleaguePlayers },
+        { type: 'euroleague-teams', data: euroleagueTeams }
+      ];
+      
+      // Filter out empty categories
+      const availableCategories = categories.filter(cat => cat.data.length > 0);
+      
+      if (availableCategories.length > 0) {
+        // Randomly select a category (equal chance for each)
+        const randomCategory = getRandomElement(availableCategories);
+        
+        if (randomCategory) {
+          // Then randomly select an item from that category
+          const randomItem = getRandomElement(randomCategory.data);
+          
+          if (randomItem) {
+            if (randomCategory.type === 'nba-players' || randomCategory.type === 'euroleague-players') {
+              // It's a Player
+              setSelectedPlayer(randomItem as Player);
+              setSelectedTeam(null);
+            } else {
+              // It's a Team
+              setSelectedTeam(randomItem as Team);
+              setSelectedPlayer(null);
+            }
+          }
         }
       }
     }
