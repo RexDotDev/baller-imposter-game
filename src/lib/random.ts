@@ -3,9 +3,16 @@
  * Falls back to Math.random() if crypto API is not available
  */
 export function getRandomInt(max: number): number {
+  if (max <= 0) return 0;
   if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
     const randomArray = new Uint32Array(1);
     window.crypto.getRandomValues(randomArray);
+    // Use rejection sampling to avoid bias
+    const maxValid = Math.floor(0xFFFFFFFF / max) * max;
+    if (randomArray[0] >= maxValid) {
+      // Retry if value is in the biased range
+      return getRandomInt(max);
+    }
     return randomArray[0] % max;
   }
   // Fallback to Math.random() if crypto API is not available
