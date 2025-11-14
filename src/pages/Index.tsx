@@ -8,6 +8,7 @@ import { TeamCarousel } from "@/components/TeamCarousel";
 import { MixedCarousel } from "@/components/MixedCarousel";
 import { allPlayers, nbaPlayers, euroleaguePlayers, Player } from "@/data/players";
 import { allTeams, nbaTeams, euroleagueTeams, Team } from "@/data/teams";
+import { getRandomElement } from "@/lib/random";
 
 type GameState = "setup" | "revealing" | "complete";
 
@@ -87,45 +88,42 @@ const Index = () => {
     }
     setImpostorPositions(positions);
     
-    // Select random item based on mode
+    // Select random item based on mode using cryptographically secure random
     if (mode === "NBA" || mode === "Euroleague" || mode === "Mix Players") {
       const filteredPlayers = mode === "NBA" ? nbaPlayers : mode === "Euroleague" ? euroleaguePlayers : allPlayers;
-      const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-      setSelectedPlayer(randomPlayer);
-      setSelectedTeam(null);
+      const randomPlayer = getRandomElement(filteredPlayers);
+      if (randomPlayer) {
+        setSelectedPlayer(randomPlayer);
+        setSelectedTeam(null);
+      }
     } else if (mode === "NBA Teams" || mode === "Euroleague Teams" || mode === "Mix Teams") {
       const filteredTeams = mode === "NBA Teams" ? nbaTeams : mode === "Euroleague Teams" ? euroleagueTeams : allTeams;
-      if (filteredTeams.length > 0) {
-        const randomTeam = filteredTeams[Math.floor(Math.random() * filteredTeams.length)];
+      const randomTeam = getRandomElement(filteredTeams);
+      if (randomTeam) {
         setSelectedTeam(randomTeam);
         setSelectedPlayer(null);
       } else {
         // Fallback to players if no teams available
-        const filteredPlayers = allPlayers;
-        const randomPlayer = filteredPlayers[Math.floor(Math.random() * filteredPlayers.length)];
-        setSelectedPlayer(randomPlayer);
-        setSelectedTeam(null);
+        const randomPlayer = getRandomElement(allPlayers);
+        if (randomPlayer) {
+          setSelectedPlayer(randomPlayer);
+          setSelectedTeam(null);
+        }
       }
     } else if (mode === "Mix Everything") {
       // Randomly choose between player and team
-      const totalItems = allPlayers.length + allTeams.length;
-      if (totalItems > 0) {
-        const randomIndex = Math.floor(Math.random() * totalItems);
-        if (randomIndex < allPlayers.length && allPlayers.length > 0) {
+      const allItems = [...allPlayers, ...allTeams];
+      const randomItem = getRandomElement(allItems);
+      if (randomItem) {
+        // Check if it's a Player or Team by checking if it has 'team' property
+        if ('team' in randomItem) {
           // It's a Player
-          const randomPlayer = allPlayers[randomIndex];
-          setSelectedPlayer(randomPlayer);
+          setSelectedPlayer(randomItem as Player);
           setSelectedTeam(null);
-        } else if (allTeams.length > 0) {
-          // It's a Team
-          const randomTeam = allTeams[randomIndex - allPlayers.length];
-          setSelectedTeam(randomTeam);
-          setSelectedPlayer(null);
         } else {
-          // Fallback to players if no teams
-          const randomPlayer = allPlayers[Math.floor(Math.random() * allPlayers.length)];
-          setSelectedPlayer(randomPlayer);
-          setSelectedTeam(null);
+          // It's a Team
+          setSelectedTeam(randomItem as Team);
+          setSelectedPlayer(null);
         }
       }
     }

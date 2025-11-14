@@ -1,20 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Player } from "@/data/players";
 import { getPlayerImageUrls } from "@/lib/playerImages";
+import { secureShuffle } from "@/lib/random";
 
 interface PlayerCarouselProps {
   players: Player[];
 }
 
-// Helper function to shuffle array
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
+// Use secure shuffle from random utility
+const shuffleArray = secureShuffle;
 
 // Helper function to create shuffled players list
 const createShuffledPlayers = (players: Player[]): Player[] => {

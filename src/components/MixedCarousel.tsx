@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Player } from "@/data/players";
 import { Team } from "@/data/teams";
 import { getPlayerImageUrls } from "@/lib/playerImages";
+import { secureShuffle } from "@/lib/random";
 
 interface MixedCarouselProps {
   players: Player[];
@@ -10,15 +11,8 @@ interface MixedCarouselProps {
 
 type CarouselItem = { type: "player"; data: Player } | { type: "team"; data: Team };
 
-// Helper function to shuffle array
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
+// Use secure shuffle from random utility
+const shuffleArray = secureShuffle;
 
 // Helper function to create shuffled mixed items list
 const createShuffledItems = (players: Player[], teams: Team[]): CarouselItem[] => {
@@ -227,8 +221,9 @@ export const MixedCarousel = ({ players, teams }: MixedCarouselProps) => {
                 src={imageUrl}
                 alt={displayName}
                 className={`w-full h-full transition-opacity duration-300 ${
-                  item.type === "player" ? "object-cover" : "object-contain p-2"
+                  item.type === "player" ? "object-cover" : "object-contain"
                 } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                style={item.type === "team" ? { padding: '8px' } : {}}
                 loading={index < 10 ? "eager" : "lazy"}
                 decoding="async"
                 fetchPriority={index < 10 ? "high" : index < 30 ? "low" : "auto"}

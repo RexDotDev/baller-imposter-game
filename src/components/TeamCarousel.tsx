@@ -1,19 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Team } from "@/data/teams";
+import { secureShuffle } from "@/lib/random";
 
 interface TeamCarouselProps {
   teams: Team[];
 }
 
-// Helper function to shuffle array
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
+// Use secure shuffle from random utility
+const shuffleArray = secureShuffle;
 
 // Helper function to create shuffled teams list
 const createShuffledTeams = (teams: Team[]): Team[] => {
@@ -212,9 +206,10 @@ export const TeamCarousel = ({ teams }: TeamCarouselProps) => {
               <img
                 src={team.logoUrl}
                 alt={team.name}
-                className={`w-full h-full object-contain p-2 transition-opacity duration-300 ${
+                className={`w-full h-full object-contain transition-opacity duration-300 ${
                   imageLoaded ? 'opacity-100' : 'opacity-0'
                 }`}
+                style={{ padding: '8px' }}
                 loading={index < 10 ? "eager" : "lazy"}
                 decoding="async"
                 fetchPriority={index < 10 ? "high" : index < 30 ? "low" : "auto"}
