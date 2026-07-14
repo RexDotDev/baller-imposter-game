@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Player } from "@/data/players";
 import { IdentityBadge } from "@/components/IdentityBadge";
 import { secureShuffle } from "@/lib/random";
+import { getPlayerImageUrl } from "@/lib/playerImages";
 
 interface PlayerCarouselProps {
   players: Player[];
@@ -137,7 +138,12 @@ export const PlayerCarousel = ({ players }: PlayerCarouselProps) => {
   const PlayerCard = ({ player, uniqueKey }: { player: Player; uniqueKey: string; index: number }) => {
     return (
       <div key={uniqueKey} className="flex flex-col items-center gap-1 flex-shrink-0 px-2">
-        <IdentityBadge name={player.name} subtitle={player.league} className="h-[118px] w-[118px] rounded-lg" />
+        <IdentityBadge
+          name={player.name}
+          subtitle={player.league}
+          imageUrl={getPlayerImageUrl(player)}
+          className="h-[118px] w-[118px] rounded-lg"
+        />
         <p className="text-xs text-muted-foreground text-center max-w-[118px] truncate">
           {player.name}
         </p>

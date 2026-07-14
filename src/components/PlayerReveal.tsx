@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { RotateCcw, ShieldAlert } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { Player } from "@/data/players";
 import { IdentityBadge } from "@/components/IdentityBadge";
+import { getPlayerImageUrl } from "@/lib/playerImages";
 
 interface PlayerRevealProps {
   currentPlayer: number;
@@ -43,7 +44,7 @@ export const PlayerReveal = ({ currentPlayer, totalPlayers, isImpostor, assigned
           <div className={`space-y-4 sm:space-y-6 ${isTransitioning ? "fade-out" : "fade-in"}`}>
             {isImpostor ? (
               <div className="text-center flex flex-col items-center justify-center min-h-[260px] sm:min-h-[400px] space-y-6">
-                <ShieldAlert className="h-28 w-28 text-destructive drop-shadow-lg" aria-hidden="true" />
+                <IdentityBadge name="Impostor" imageUrl="/Imposter.png" className="h-64 w-full max-w-sm border-0 bg-transparent shadow-none" />
                 <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-destructive impostor-glow">IMPOSTOR</h3>
               </div>
             ) : assignedPlayer ? (
@@ -53,7 +54,12 @@ export const PlayerReveal = ({ currentPlayer, totalPlayers, isImpostor, assigned
                   <p className="text-base sm:text-lg md:text-xl text-muted-foreground">{assignedPlayer.team}</p>
                   <p className="text-sm sm:text-base md:text-lg text-primary font-semibold">{assignedPlayer.league}</p>
                 </div>
-                <IdentityBadge name={assignedPlayer.name} subtitle={`${assignedPlayer.team} · ${assignedPlayer.league}`} className="mx-auto h-56 w-full max-w-sm" />
+                <IdentityBadge
+                  name={assignedPlayer.name}
+                  subtitle={`${assignedPlayer.team} · ${assignedPlayer.league}`}
+                  imageUrl={getPlayerImageUrl(assignedPlayer)}
+                  className="mx-auto h-56 w-full max-w-sm"
+                />
               </div>
             ) : null}
             <div className="flex gap-2 sm:gap-3">

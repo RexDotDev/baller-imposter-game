@@ -137,7 +137,13 @@ export const TeamCarousel = ({ teams }: TeamCarouselProps) => {
   const TeamCard = ({ team, uniqueKey }: { team: Team; uniqueKey: string; index: number }) => {
     return (
       <div key={uniqueKey} className="flex flex-col items-center gap-1 flex-shrink-0 px-2">
-        <IdentityBadge name={team.name} subtitle={team.league} className="h-[118px] w-[118px] rounded-lg" />
+        <IdentityBadge
+          name={team.name}
+          subtitle={team.league}
+          imageUrl={team.logoUrl}
+          imageClassName="object-contain p-3"
+          className="h-[118px] w-[118px] rounded-lg"
+        />
         <p className="text-xs text-muted-foreground text-center max-w-[118px] truncate">
           {team.name}
         </p>
