@@ -1,73 +1,45 @@
-# Welcome to your Lovable project
+# Baller Imposter Game
 
-## Project info
+A local pass-and-play party game for basketball fans. One or more players are impostors; everyone else receives the same player or team and tries to identify who is bluffing.
 
-**URL**: https://example.invalid
+## Features
 
-## How can I edit this code?
+- NBA, EuroLeague, team, player, and mixed game modes
+- Configurable player and impostor counts
+- Privacy-friendly text and initials instead of bundled player photos or team logos
+- No backend, account, API key, or environment variables required
 
-There are several ways of editing your application.
+## Run locally
 
-**Use Lovable**
+Requirements: Node.js 22.12+ and npm.
 
-Simply visit the [Lovable Project](https://example.invalid) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm ci
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The development server starts at `http://localhost:8080`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Quality checks
 
-**Use GitHub Codespaces**
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deployment
 
-## What technologies are used for this project?
+This is a static Vite application. See [DEPLOY.md](DEPLOY.md) for Vercel instructions; any static host that serves `dist/` with an SPA fallback will work.
 
-This project is built with:
+## Contributing
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a change. Please report vulnerabilities through GitHub's private security-advisory flow as described in [SECURITY.md](SECURITY.md).
 
-## How can I deploy this project?
+## Legal notice
 
-Simply open [Lovable](https://example.invalid) and click on Share -> Publish.
+This is an independent fan project and is not affiliated with, endorsed by, or sponsored by the NBA, EuroLeague, their teams, or their players. Names are used only to identify game subjects. The repository intentionally does not distribute third-party player photography, team logos, copied articles, or restricted fonts.
 
-## Can I connect a custom domain to my Lovable project?
+## License
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+[MIT](LICENSE) for the original source code and documentation in this repository. The license does not grant rights to third-party names or trademarks.

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Player } from "@/data/players";
 import { Team } from "@/data/teams";
-import { getPlayerImageUrls } from "@/lib/playerImages";
+import { IdentityBadge } from "@/components/IdentityBadge";
 import { secureShuffle } from "@/lib/random";
 
 interface MixedCarouselProps {
@@ -134,114 +134,16 @@ export const MixedCarousel = ({ players, teams }: MixedCarouselProps) => {
     }
   }, [players, teams]);
 
-  // Create item card component
-  const ItemCard = ({ item, uniqueKey, index }: { item: CarouselItem; uniqueKey: string; index: number }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const [shouldLoad, setShouldLoad] = useState(false);
-    const [imageLoaded, setImageLoaded] = useState(false);
-    const cardRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      if (index < 20) {
-        setShouldLoad(true);
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setIsVisible(true);
-              const delay = Math.min(index * 5, 100);
-              setTimeout(() => {
-                setShouldLoad(true);
-              }, delay);
-            }
-          });
-        },
-        {
-          rootMargin: "300px",
-          threshold: 0.01,
-        }
-      );
-
-      const currentCard = cardRef.current;
-      if (currentCard) {
-        observer.observe(currentCard);
-      }
-
-      return () => {
-        if (currentCard) {
-          observer.unobserve(currentCard);
-        }
-      };
-    }, [index]);
-
-    // Preload image when shouldLoad becomes true
-    useEffect(() => {
-      if (shouldLoad && !imageLoaded) {
-        if (item.type === "player") {
-          const imageUrls = getPlayerImageUrls(item.data);
-          const imageUrl = imageUrls.length > 0 ? imageUrls[0] : "";
-          if (imageUrl) {
-            const img = new Image();
-            img.src = imageUrl;
-            img.onload = () => setImageLoaded(true);
-            img.onerror = () => setImageLoaded(false);
-          }
-        } else {
-          if (item.data.logoUrl) {
-            const img = new Image();
-            img.src = item.data.logoUrl;
-            img.onload = () => setImageLoaded(true);
-            img.onerror = () => setImageLoaded(false);
-          }
-        }
-      }
-    }, [shouldLoad, imageLoaded, item]);
-
-    const displayName = item.type === "player" ? item.data.name : item.data.name;
-    const imageUrl = item.type === "player" 
-      ? (getPlayerImageUrls(item.data)[0] || "")
-      : item.data.logoUrl;
+  const ItemCard = ({ item, uniqueKey }: { item: CarouselItem; uniqueKey: string; index: number }) => {
+    const displayName = item.data.name;
 
     return (
-      <div ref={cardRef} key={uniqueKey} className="flex flex-col items-center gap-1 flex-shrink-0 px-2">
-        <div className="w-[118px] h-[118px] rounded-lg overflow-hidden bg-secondary/50 flex items-center justify-center border-2 border-game-border relative">
-          {shouldLoad && imageUrl ? (
-            <>
-              {!imageLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-secondary/30 animate-pulse">
-                  <div className="text-xs text-muted-foreground text-center px-2">
-                    {displayName}
-                  </div>
-                </div>
-              )}
-              <img
-                src={imageUrl}
-                alt={displayName}
-                className={`w-full h-full transition-opacity duration-300 ${
-                  item.type === "player" ? "object-cover" : "object-contain"
-                } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                style={item.type === "team" ? { padding: '8px' } : {}}
-                loading={index < 10 ? "eager" : "lazy"}
-                decoding="async"
-                fetchPriority={index < 10 ? "high" : index < 30 ? "low" : "auto"}
-                width="118"
-                height="118"
-                onLoad={() => setImageLoaded(true)}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                  setImageLoaded(false);
-                }}
-              />
-            </>
-          ) : (
-            <div className="text-xs text-muted-foreground text-center px-2">
-              {displayName}
-            </div>
-          )}
-        </div>
+      <div key={uniqueKey} className="flex flex-col items-center gap-1 flex-shrink-0 px-2">
+        <IdentityBadge
+          name={displayName}
+          subtitle={item.type === "player" ? item.data.league : `Team · ${item.data.league}`}
+          className="h-[118px] w-[118px] rounded-lg"
+        />
         <p className="text-xs text-muted-foreground text-center max-w-[118px] truncate">
           {displayName}
         </p>
@@ -292,4 +194,3 @@ export const MixedCarousel = ({ players, teams }: MixedCarouselProps) => {
     </div>
   );
 };
-

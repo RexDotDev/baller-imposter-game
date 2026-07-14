@@ -309,8 +309,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-8">
         <div className="text-center text-sm text-muted-foreground space-y-1">
-          <p>© 2025 The Impostor. All rights reserved.</p>
-          <p>project contributors</p>
+          <p>Open-source basketball party game.</p>
         </div>
       </footer>
     </div>
