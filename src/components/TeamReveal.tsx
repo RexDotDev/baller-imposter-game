@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { RotateCcw, ShieldAlert } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { Team } from "@/data/teams";
 import { IdentityBadge } from "@/components/IdentityBadge";
 
@@ -41,7 +41,7 @@ export const TeamReveal = ({ currentPlayer, totalPlayers, isImpostor, assignedTe
           <div className={`space-y-4 sm:space-y-6 ${isTransitioning ? "fade-out" : "fade-in"}`}>
             {isImpostor ? (
               <div className="text-center flex flex-col items-center justify-center min-h-[260px] sm:min-h-[400px] space-y-6">
-                <ShieldAlert className="h-28 w-28 text-destructive drop-shadow-lg" aria-hidden="true" />
+                <IdentityBadge name="Impostor" imageUrl="/Imposter.png" className="h-64 w-full max-w-sm border-0 bg-transparent shadow-none" />
                 <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-destructive impostor-glow">IMPOSTOR</h3>
               </div>
             ) : assignedTeam ? (
@@ -50,7 +50,13 @@ export const TeamReveal = ({ currentPlayer, totalPlayers, isImpostor, assignedTe
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold">{assignedTeam.name}</h3>
                   <p className="text-sm sm:text-base md:text-lg text-primary font-semibold">{assignedTeam.league}</p>
                 </div>
-                <IdentityBadge name={assignedTeam.name} subtitle={`Team · ${assignedTeam.league}`} className="mx-auto h-56 w-full max-w-sm" />
+                <IdentityBadge
+                  name={assignedTeam.name}
+                  subtitle={`Team · ${assignedTeam.league}`}
+                  imageUrl={assignedTeam.logoUrl}
+                  imageClassName="object-contain p-8"
+                  className="mx-auto h-56 w-full max-w-sm"
+                />
               </div>
             ) : null}
             <div className="flex gap-2 sm:gap-3">

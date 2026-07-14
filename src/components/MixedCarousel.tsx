@@ -3,6 +3,7 @@ import { Player } from "@/data/players";
 import { Team } from "@/data/teams";
 import { IdentityBadge } from "@/components/IdentityBadge";
 import { secureShuffle } from "@/lib/random";
+import { getPlayerImageUrl } from "@/lib/playerImages";
 
 interface MixedCarouselProps {
   players: Player[];
@@ -142,6 +143,8 @@ export const MixedCarousel = ({ players, teams }: MixedCarouselProps) => {
         <IdentityBadge
           name={displayName}
           subtitle={item.type === "player" ? item.data.league : `Team · ${item.data.league}`}
+          imageUrl={item.type === "player" ? getPlayerImageUrl(item.data) : item.data.logoUrl}
+          imageClassName={item.type === "player" ? "object-contain" : "object-contain p-3"}
           className="h-[118px] w-[118px] rounded-lg"
         />
         <p className="text-xs text-muted-foreground text-center max-w-[118px] truncate">

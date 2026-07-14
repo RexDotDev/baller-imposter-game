@@ -11,6 +11,11 @@ import { allTeams, nbaTeams, euroleagueTeams, Team } from "@/data/teams";
 import { getRandomElement } from "@/lib/random";
 
 type GameState = "setup" | "revealing" | "complete";
+type MixedCategory =
+  | { type: "nba-players"; data: Player[] }
+  | { type: "euroleague-players"; data: Player[] }
+  | { type: "nba-teams"; data: Team[] }
+  | { type: "euroleague-teams"; data: Team[] };
 
 const Index = () => {
   const [gameState, setGameState] = useState<GameState>("setup");
@@ -160,7 +165,7 @@ const Index = () => {
       }
     } else if (mode === "Mix Everything") {
       // First randomly choose a category (each has 25% chance)
-      const categories = [
+      const categories: MixedCategory[] = [
         { type: 'nba-players', data: nbaPlayers },
         { type: 'nba-teams', data: nbaTeams },
         { type: 'euroleague-players', data: euroleaguePlayers },
@@ -175,17 +180,16 @@ const Index = () => {
         const randomCategory = getRandomElement(availableCategories);
         
         if (randomCategory) {
-          // Then randomly select an item from that category
-          const randomItem = getRandomElement(randomCategory.data);
-          
-          if (randomItem) {
-            if (randomCategory.type === 'nba-players' || randomCategory.type === 'euroleague-players') {
-              // It's a Player
-              setSelectedPlayer(randomItem as Player);
+          if (randomCategory.type === 'nba-players' || randomCategory.type === 'euroleague-players') {
+            const randomPlayer = getRandomElement(randomCategory.data);
+            if (randomPlayer) {
+              setSelectedPlayer(randomPlayer);
               setSelectedTeam(null);
-            } else {
-              // It's a Team
-              setSelectedTeam(randomItem as Team);
+            }
+          } else {
+            const randomTeam = getRandomElement(randomCategory.data);
+            if (randomTeam) {
+              setSelectedTeam(randomTeam);
               setSelectedPlayer(null);
             }
           }

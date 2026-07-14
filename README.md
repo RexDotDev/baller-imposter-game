@@ -6,7 +6,7 @@ A local pass-and-play party game for basketball fans. One or more players are im
 
 - NBA, EuroLeague, team, player, and mixed game modes
 - Configurable player and impostor counts
-- Privacy-friendly text and initials instead of bundled player photos or team logos
+- Bundled player photos and team logos, with initials as a loading/error fallback
 - No backend, account, API key, or environment variables required
 
 ## Run locally
@@ -38,8 +38,8 @@ Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) be
 
 ## Legal notice
 
-This is an independent fan project and is not affiliated with, endorsed by, or sponsored by the NBA, EuroLeague, their teams, or their players. Names are used only to identify game subjects. The repository intentionally does not distribute third-party player photography, team logos, copied articles, or restricted fonts.
+This is an independent, free, non-commercial fan project and is not affiliated with, endorsed by, or sponsored by the NBA, EuroLeague, their teams, or their players. Player photography, team logos, and the impostor artwork are third-party assets and are not covered by the MIT license. See [THIRD_PARTY_ASSETS.md](THIRD_PARTY_ASSETS.md). The repository does not include the previously saved article, analytics scripts, or restricted font.
 
 ## License
 
-[MIT](LICENSE) for the original source code and documentation in this repository. The license does not grant rights to third-party names or trademarks.
+[MIT](LICENSE) for the original source code and documentation in this repository. The license does not grant rights to third-party photographs, artwork, names, logos, or trademarks.
