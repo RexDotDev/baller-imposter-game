@@ -36,7 +36,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
       const saved = localStorage.getItem(IMPOSTOR_COUNT_STORAGE_KEY);
       if (saved) {
         const parsed = parseInt(saved, 10);
-        if (parsed >= 0) {
+        if (parsed >= 1) {
           return parsed;
         }
       }
@@ -74,7 +74,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
     }
   }, [currentMode, mode]);
 
-  const maxImpostors = Math.floor(playerCount / 2);
+  const maxImpostors = Math.max(1, Math.floor((playerCount - 1) / 2));
 
   // Validate impostor count when player count changes
   useEffect(() => {
@@ -119,20 +119,20 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
   };
 
   const decrementImpostors = () => {
-    if (impostorCount > 0) setImpostorCount(impostorCount - 1);
+    if (impostorCount > 1) setImpostorCount(impostorCount - 1);
   };
 
   return (
     <Card className="p-8 max-w-2xl w-full bg-card/80 backdrop-blur border-game-border animate-scale-in">
       <div className="space-y-6">
         <p className="text-muted-foreground text-center">
-          The AI automatically chooses a basketball player or team for this match.
+          A basketball player or team is selected at random for every round.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
             <label className="text-sm font-medium">
-              Amount of players <span className="text-muted-foreground">(4 to 15)</span>
+              Players <span className="text-muted-foreground">(4 to 15)</span>
             </label>
             <div className="flex items-center gap-3">
               <Button
@@ -140,6 +140,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
                 size="icon"
                 onClick={decrementPlayers}
                 disabled={playerCount <= 4}
+                aria-label="Remove one player"
               >
                 <Minus className="h-4 w-4" />
               </Button>
@@ -156,6 +157,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
                 size="icon"
                 onClick={incrementPlayers}
                 disabled={playerCount >= 15}
+                aria-label="Add one player"
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -164,14 +166,15 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
 
           <div className="space-y-3">
             <label className="text-sm font-medium">
-              Amount of impostors <span className="text-muted-foreground">(max. {maxImpostors})</span>
+              Impostors <span className="text-muted-foreground">(1 to {maxImpostors})</span>
             </label>
             <div className="flex items-center gap-3">
               <Button
                 variant="secondary"
                 size="icon"
                 onClick={decrementImpostors}
-                disabled={impostorCount <= 0}
+                disabled={impostorCount <= 1}
+                aria-label="Remove one impostor"
               >
                 <Minus className="h-4 w-4" />
               </Button>
@@ -188,6 +191,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
                 size="icon"
                 onClick={incrementImpostors}
                 disabled={impostorCount >= maxImpostors}
+                aria-label="Add one impostor"
               >
                 <Plus className="h-4 w-4" />
               </Button>
@@ -227,7 +231,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
               }}
               className="w-full"
             >
-              Mix Players
+              Mixed Players
             </Button>
             <Button
               variant={mode === "NBA Teams" ? "default" : "outline"}
@@ -257,7 +261,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
               }}
               className="w-full"
             >
-              Mix Teams
+              Mixed Teams
             </Button>
             <Button
               variant={mode === "Mix Everything" ? "default" : "outline"}
@@ -265,9 +269,9 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
                 setMode("Mix Everything");
                 onModeChange?.("Mix Everything");
               }}
-              className="w-full"
+              className="col-span-2 w-full"
             >
-              Mix Everything
+              All Players & Teams
             </Button>
           </div>
         </div>
@@ -278,7 +282,7 @@ export const GameSetup = ({ onStartGame, onModeChange, currentMode }: GameSetupP
           size="lg"
         >
           <Gamepad2 className="h-5 w-5" />
-          Start the game
+          Start game
         </Button>
       </div>
     </Card>

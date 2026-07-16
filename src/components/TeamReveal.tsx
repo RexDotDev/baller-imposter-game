@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { RotateCcw } from "lucide-react";
 import { Team } from "@/data/teams";
 import { IdentityBadge } from "@/components/IdentityBadge";
+import { ImpostorReveal } from "@/components/ImpostorReveal";
 
 interface TeamRevealProps {
   currentPlayer: number;
@@ -31,19 +32,20 @@ export const TeamReveal = ({ currentPlayer, totalPlayers, isImpostor, assignedTe
   return (
     <Card className="p-3 sm:p-6 md:p-8 max-w-2xl w-full bg-card/80 backdrop-blur border-game-border animate-scale-in">
       <div className="space-y-2 sm:space-y-4 md:space-y-6">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center">Player {currentPlayer}/{totalPlayers}</h2>
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center">
+          Player {currentPlayer} of {totalPlayers}
+        </h2>
         {!revealed ? (
           <div className="text-center space-y-4 sm:space-y-6 min-h-[400px] flex flex-col items-center justify-center">
-            <p className="text-lg sm:text-xl text-muted-foreground">Get ready to see your role</p>
-            <Button onClick={() => setRevealed(true)} className="mt-6 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg py-6 px-8 glow-orange" size="lg">Look at your role</Button>
+            <p className="text-lg sm:text-xl text-muted-foreground">
+              Make sure only you can see the screen.
+            </p>
+            <Button onClick={() => setRevealed(true)} className="mt-6 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg py-6 px-8 glow-orange" size="lg">Reveal my role</Button>
           </div>
         ) : (
           <div className={`space-y-4 sm:space-y-6 ${isTransitioning ? "fade-out" : "fade-in"}`}>
             {isImpostor ? (
-              <div className="text-center flex flex-col items-center justify-center min-h-[260px] sm:min-h-[400px] space-y-6">
-                <IdentityBadge name="Impostor" imageUrl="/Imposter.png" className="h-64 w-full max-w-sm border-0 bg-transparent shadow-none" />
-                <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-destructive impostor-glow">IMPOSTOR</h3>
-              </div>
+              <ImpostorReveal />
             ) : assignedTeam ? (
               <div className="text-center space-y-4">
                 <div>
@@ -60,7 +62,9 @@ export const TeamReveal = ({ currentPlayer, totalPlayers, isImpostor, assignedTe
               </div>
             ) : null}
             <div className="flex gap-2 sm:gap-3">
-              <Button onClick={handleContinue} className="flex-1 bg-primary hover:bg-primary/90 text-sm sm:text-base" size="default" disabled={isTransitioning}>Continue</Button>
+              <Button onClick={handleContinue} className="flex-1 bg-primary hover:bg-primary/90 text-sm sm:text-base" size="default" disabled={isTransitioning}>
+                {currentPlayer === totalPlayers ? "Finish setup" : "Hide role and continue"}
+              </Button>
               <Button onClick={onReset} variant="secondary" size="default" aria-label="Reset game"><RotateCcw className="h-3 w-3 sm:h-4 sm:w-4" /></Button>
             </div>
           </div>

@@ -10,7 +10,7 @@ import { allPlayers, nbaPlayers, euroleaguePlayers, Player } from "@/data/player
 import { allTeams, nbaTeams, euroleagueTeams, Team } from "@/data/teams";
 import { getRandomElement } from "@/lib/random";
 
-type GameState = "setup" | "revealing" | "complete";
+type GameState = "setup" | "revealing";
 type MixedCategory =
   | { type: "nba-players"; data: Player[] }
   | { type: "euroleague-players"; data: Player[] }
@@ -21,8 +21,6 @@ const Index = () => {
   const [gameState, setGameState] = useState<GameState>("setup");
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [totalPlayers, setTotalPlayers] = useState(4);
-  const [assignedPlayer, setAssignedPlayer] = useState<Player | null>(null);
-  const [assignedTeam, setAssignedTeam] = useState<Team | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [gameMode, setGameMode] = useState<GameMode>("Mix Players");
@@ -204,8 +202,6 @@ const Index = () => {
   const handleContinue = () => {
     if (currentPlayer < totalPlayers) {
       setCurrentPlayer(currentPlayer + 1);
-      setAssignedPlayer(null);
-      setAssignedTeam(null);
     } else {
       // Automatically return to home screen when all players have seen their roles
       handleReset();
@@ -215,23 +211,12 @@ const Index = () => {
   const handleReset = () => {
     setGameState("setup");
     setCurrentPlayer(1);
-    setAssignedPlayer(null);
-    setAssignedTeam(null);
     setSelectedPlayer(null);
     setSelectedTeam(null);
     setImpostorPositions([]);
   };
 
   const isCurrentPlayerImpostor = impostorPositions.includes(currentPlayer);
-
-  // Set the assigned player/team when revealing
-  if (gameState === "revealing" && !assignedPlayer && !assignedTeam && !isCurrentPlayerImpostor) {
-    if (selectedPlayer) {
-      setAssignedPlayer(selectedPlayer);
-    } else if (selectedTeam) {
-      setAssignedTeam(selectedTeam);
-    }
-  }
 
   return (
     <div className="min-h-screen diagonal-stripes flex flex-col">
@@ -247,10 +232,10 @@ const Index = () => {
           {gameState !== "revealing" && (
             <div className="text-center space-y-2 animate-fade-in">
               <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-                THE IMPOSTOR
+                BALLER IMPOSTOR
               </h1>
-              <p className="text-lg text-muted-foreground uppercase tracking-wider">
-                Basketball • Version
+              <p className="text-base text-muted-foreground uppercase tracking-[0.18em] sm:text-lg">
+                Pass-and-play basketball party game
               </p>
             </div>
           )}
@@ -267,12 +252,12 @@ const Index = () => {
 
             {gameState === "revealing" && (
               <div className="w-full flex justify-center">
-                {selectedPlayer || (gameMode === "Mix Everything" && assignedPlayer) ? (
+                {selectedPlayer ? (
                   <PlayerReveal
                     currentPlayer={currentPlayer}
                     totalPlayers={totalPlayers}
                     isImpostor={isCurrentPlayerImpostor}
-                    assignedPlayer={isCurrentPlayerImpostor ? null : assignedPlayer}
+                    assignedPlayer={isCurrentPlayerImpostor ? null : selectedPlayer}
                     onContinue={handleContinue}
                     onReset={handleReset}
                   />
@@ -281,7 +266,7 @@ const Index = () => {
                     currentPlayer={currentPlayer}
                     totalPlayers={totalPlayers}
                     isImpostor={isCurrentPlayerImpostor}
-                    assignedTeam={isCurrentPlayerImpostor ? null : assignedTeam}
+                    assignedTeam={isCurrentPlayerImpostor ? null : selectedTeam}
                     onContinue={handleContinue}
                     onReset={handleReset}
                   />
@@ -312,8 +297,9 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="py-8">
-        <div className="text-center text-sm text-muted-foreground space-y-1">
-          <p>Open-source basketball party game.</p>
+        <div className="mx-auto max-w-2xl space-y-1 px-4 text-center text-xs leading-relaxed text-muted-foreground sm:text-sm">
+          <p>Free, open-source, and built for basketball fans.</p>
+          <p>Unofficial fan project. Not affiliated with or endorsed by any league, team, or player.</p>
         </div>
       </footer>
     </div>
